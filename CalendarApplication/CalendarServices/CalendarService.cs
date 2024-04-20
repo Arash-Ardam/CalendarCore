@@ -1,5 +1,7 @@
 ﻿using CalendarDbContext.AppDbContext;
 using CalendarDomain;
+using CalendarDomain.Exceptions;
+using CalendarDomain.Exceptions.Calendar;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -19,31 +21,24 @@ namespace CalendarApplication.CalendarServices
             this.dbContext = dbContext;
         }
 
-
-
-
-
-
-
-
         #region Calendar CRUD services
         public async Task AddCalendarByName(string calendarName)
         {
             var entryCalendar = CalendarDomain.Calendar.CreateByName(calendarName);
 
-            if (!string.IsNullOrEmpty(calendarName))
-            {
-                await dbContext.Calendars.AddAsync(entryCalendar);
-                await dbContext.SaveChangesAsync();
-            }
-            else
-                throw new ArgumentNullException(nameof(calendarName));
+            await dbContext.Calendars.AddAsync(entryCalendar);
+            await dbContext.SaveChangesAsync();
+
         }
 
         public async Task<CalendarDomain.Calendar> GetCalendarByName(string calendarName)
         {
-
             var calendar = await dbContext.Calendars.FirstOrDefaultAsync(x => x.Name == calendarName);
+
+            if(null ==  calendar)
+            {
+                throw new CalendarNotFoundException(calendarName);
+            }
 
             dbContext.Entry(calendar)
                 .Collection(cal => cal.Events)
@@ -52,6 +47,47 @@ namespace CalendarApplication.CalendarServices
                 .ToList();
 
             return calendar;
+        }
+
+        public async Task<List<DayOfWeek>> GetWeekendsByDate(string calendarName, DateTime date)
+        {
+            var calendar = await dbContext.Calendars.FirstOrDefaultAsync(x => x.Name == calendarName);
+
+            if (null == calendar)
+            {
+                throw new CalendarNotFoundException(calendarName);
+            }
+
+            var weekends = calendar.Weekend.Get(date);
+
+            return weekends;
+
+        }
+
+        public async Task RemoveCalendarByName(string calendarName)
+        {
+            var entity = CalendarDomain.Calendar.CreateByName(calendarName);
+
+            dbContext.Calendars.Remove(entity);
+            await dbContext.SaveChangesAsync();
+
+        }
+
+        public Task SetWeekendsToCalendar(string calendarName, List<DayOfWeek> weekends)
+        {
+            var calendar = dbContext.Calendars
+                .FirstOrDefault(x => x.Name == calendarName);
+
+            if(null == calendar)
+                throw new CalendarNotFoundException(calendarName);
+
+            calendar.SetDefaultWeekend(DateTime.Now, weekends);
+
+            dbContext.Entry(calendar).Property(x => x.Weekend).IsModified = true;            
+
+             dbContext.SaveChanges();
+            return Task.CompletedTask;
+
         }
         #endregion
 

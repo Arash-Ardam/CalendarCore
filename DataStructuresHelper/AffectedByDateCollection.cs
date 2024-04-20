@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using DataStructures.Exceptions;
+using System.Data;
 
 namespace DataStructures
 {
@@ -62,11 +63,12 @@ namespace DataStructures
 
         public T Get(DateTime dateTime)
         {
-            T result = Values.FindLast(x => dateTime >= x.Key ).Value;
+            T result = Values.FindLast(x => dateTime >= x.Key).Value;
 
             if (result?.Equals(default(T)) ?? true)
             {
-                throw new ArgumentOutOfRangeException(nameof(result));  
+                var min = Values.Min(x => x.Key);
+                throw new AffectedDateIsLessThanMinException(dateTime, min);  
             }
 
             return result;

@@ -1,5 +1,6 @@
 ﻿using CalendarApplication.CalendarServices;
 using CalendarRestApi.DTOs.Event;
+using CalendarRestApi.ExceptionHandling;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,11 +18,11 @@ namespace CalendarRestApi.Controllers.Admin
 
     public class CalendarController : ControllerBase, ICalendarController
     {
-        private readonly ICalendarService adminService;
+        private readonly ICalendarService Service;
 
-        public CalendarController(ICalendarService adminService)
+        public CalendarController(ICalendarService service)
         {
-            this.adminService = adminService;
+            this.Service = service;
         }
 
         #region Get Apis
@@ -93,61 +94,34 @@ namespace CalendarRestApi.Controllers.Admin
         #endregion
 
         #region Calendar CRUD Apis
+
         [HttpPost("{calendarName}/Add")]
         public async Task<IActionResult> AddCalendarByName(string calendarName)
         {
-            try
-            {
-                await adminService.AddCalendarByName(calendarName);
-                return Created();
-            }
-            catch (ArgumentNullException)
-            {
-
-                return Problem("calendarName Cant Be Null or Empty",statusCode: (int)HttpStatusCode.BadRequest);
-            }
-            catch(DbUpdateException ex) 
-            {
-                var sqlException = ex.InnerException as SqlException;
-                if (sqlException.Number == 2627)
-                {
-                    return Problem($"Calendar with name ({calendarName}) is already Exist", statusCode: (int)HttpStatusCode.BadRequest);
-                }
-                else
-                {
-                    return Problem("Other errors");
-                }
-            }
+            await Service.AddCalendarByName(calendarName);
+            return Created();
         }
 
         [HttpGet("{calendarName}/Get")]
         public async Task<IActionResult> GetCalendarByName(string calendarName)
         {
-            try
-            {
-                var calendar = await adminService.GetCalendarByName(calendarName);
-                return Ok(calendar);
-
-            }
-            catch (Exception ex)
-            {
-                if (ex is ArgumentNullException)
-                    return Problem($"There is no calendar with name : {calendarName}", statusCode: (int)HttpStatusCode.NotFound);
-                else
-                    return Problem("Other Error");
-            }
+            var calendar = await Service.GetCalendarByName(calendarName);
+            return Ok(calendar);
         }
 
         [HttpDelete("{calendarName}/Remove")]
-        public Task<IActionResult> RemoveCalendarByName(string calendarName)
+        public async Task<IActionResult> RemoveCalendarByName(string calendarName)
         {
-            throw new NotImplementedException();
+            await Service.RemoveCalendarByName(calendarName);
+            return Accepted("Successfully Deleted");
         }
 
         [HttpGet("{calendarName}/{date}/Weekends/Get")]
-        public Task<IActionResult> GetWeekendsByDate(string calendarName, DateTime Date)
+        public async Task<IActionResult> GetWeekendsByDate(string calendarName, DateTime date)
         {
-            throw new NotImplementedException();
+            var weekends = await Service.GetWeekendsByDate(calendarName, date);
+
+            return Ok(weekends);
         }
 
         [HttpPut("{calendarName}/Weekends/Modify")]
@@ -157,9 +131,10 @@ namespace CalendarRestApi.Controllers.Admin
         }
 
         [HttpPost("{calendarName}/Weekends/Add")]
-        public Task<IActionResult> SetWeekendsToCalendar(string calendarName, List<DayOfWeek> weekends)
+        public async Task<IActionResult> SetWeekendsToCalendar(string calendarName, List<DayOfWeek> weekends)
         {
-            throw new NotImplementedException();
+            await Service.SetWeekendsToCalendar(calendarName, weekends);
+            return Created();
         }
 
         #endregion

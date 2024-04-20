@@ -1,11 +1,17 @@
 using CalendarApplication.CalendarServices;
 using CalendarDbContext.DbConfigs;
+using CalendarRestApi.ExceptionHandling;
 using CalendarRestApi.SwaggerConfigs;
 using Mapster;
 using MapsterMapper;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.OpenApi.Models;
+using System.Linq.Expressions;
+using System.Net;
 using System.Reflection;
+using System.Text.Json.Serialization;
+using System.Text.Json;
+using CalendarRestApi.ExceptionHandling.Comfigs;
 
 namespace CalendarApi
 {
@@ -17,11 +23,19 @@ namespace CalendarApi
 
             // Add services to the container.
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers()
+                .AddJsonOptions(option => {
+                        option.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                        option.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+            }); ;
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
 
-            builder.AddSwaggerGenConfigs(); 
+            builder.AddSwaggerGenConfigs();
+
+            builder.AddRequiredExceptionHandlers();
+
+            builder.Services.AddProblemDetails();
 
             builder.Services.AddCalendarDb(builder.Configuration);
 
@@ -39,6 +53,7 @@ namespace CalendarApi
                 .AddHttpClient();
 
             var app = builder.Build();
+         
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -51,6 +66,7 @@ namespace CalendarApi
 
             app.UseAuthorization();
 
+            app.UseExceptionHandler();
 
             app.MapControllers();
 

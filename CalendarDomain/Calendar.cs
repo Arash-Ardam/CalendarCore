@@ -31,6 +31,12 @@ public class Calendar
     #endregion
 
 
+    //public void UpdateCalendarName(string name)
+    //{
+    //    this.Name = name;
+    //}
+
+
     public void SetDefaultWeekend(DateTime affectedDate ,List<DayOfWeek> weekends)
     {
         Weekend.Add(affectedDate, weekends);

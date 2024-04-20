@@ -12,5 +12,8 @@ namespace CalendarApplication.CalendarServices
         Task AddCalendarByName(string calendarName);
 
         Task<Calendar> GetCalendarByName(string calendarName);
+        Task<List<DayOfWeek>> GetWeekendsByDate(string calendarName, DateTime date);
+        Task RemoveCalendarByName(string calendarName);
+        Task SetWeekendsToCalendar(string calendarName, List<DayOfWeek> weekends);
     }
 }
