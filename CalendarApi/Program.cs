@@ -1,9 +1,10 @@
-using CalendarApplication.CalendarServices.AdminService;
-using CalendarApplication.CalendarServices.DbService;
-using CalendarApplication.LiveCalendar;
+using CalendarApplication.CalendarServices;
 using CalendarDbContext.DbConfigs;
+using CalendarRestApi.SwaggerConfigs;
 using Mapster;
 using MapsterMapper;
+using Microsoft.AspNetCore.Mvc.Controllers;
+using Microsoft.OpenApi.Models;
 using System.Reflection;
 
 namespace CalendarApi
@@ -19,7 +20,8 @@ namespace CalendarApi
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+
+            builder.AddSwaggerGenConfigs(); 
 
             builder.Services.AddCalendarDb(builder.Configuration);
 
@@ -31,7 +33,7 @@ namespace CalendarApi
             var mapperConfig = new Mapper(typeAdapterConfig);
             builder.Services.AddSingleton<IMapper>(mapperConfig);
             //Add Services
-            builder.Services.AddScoped<IAdminService, AdminService>();
+            builder.Services.AddScoped<ICalendarService, CalendarService>();
 
             builder.Services
                 .AddHttpClient();

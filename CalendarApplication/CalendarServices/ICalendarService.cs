@@ -5,13 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CalendarApplication.LiveCalendar
+namespace CalendarApplication.CalendarServices
 {
     public interface ICalendarService
     {
-         Task<bool> IsWorkingDay(string CalendarName, DateTime dateTime);
-        Task AddEvent(string CalendarName, DateTime dateTime,string description,bool isHoliday);
+        Task AddCalendarByName(string calendarName);
 
-        Task AddCalendar(string CalendarName);
+        Task<Calendar> GetCalendarByName(string calendarName);
     }
 }

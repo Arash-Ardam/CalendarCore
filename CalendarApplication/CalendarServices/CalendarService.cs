@@ -3,44 +3,58 @@ using CalendarDomain;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CalendarApplication.CalendarServices.AdminService
+namespace CalendarApplication.CalendarServices
 {
-    public class AdminService :IAdminService
+    public class CalendarService : ICalendarService
     {
         private readonly ApplicationDbContext dbContext;
 
-        public AdminService(ApplicationDbContext dbContext)
+        public CalendarService(ApplicationDbContext dbContext)
         {
             this.dbContext = dbContext;
         }
 
-        public async Task AddCalendarByName(string CalendarName)
-        {
-            Calendar calendar = Calendar.CreateByName(CalendarName);
 
-            await dbContext.Calendars.AddAsync(calendar);
-            await dbContext.SaveChangesAsync();
+
+
+
+
+
+
+        #region Calendar CRUD services
+        public async Task AddCalendarByName(string calendarName)
+        {
+            var entryCalendar = CalendarDomain.Calendar.CreateByName(calendarName);
+
+            if (!string.IsNullOrEmpty(calendarName))
+            {
+                await dbContext.Calendars.AddAsync(entryCalendar);
+                await dbContext.SaveChangesAsync();
+            }
+            else
+                throw new ArgumentNullException(nameof(calendarName));
         }
 
-        public Task AddEvent(string CalendarName, DateTime dateTime, string description, bool isHoliday)
+        public async Task<CalendarDomain.Calendar> GetCalendarByName(string calendarName)
         {
-            throw new NotImplementedException();
-        }
 
-        public async Task AddWeekend(string CalendarName,DayOfWeek weekend)
-        {
-            Calendar calendar = dbContext.Calendars.First(x => x.Name == CalendarName);
-        }
+            var calendar = await dbContext.Calendars.FirstOrDefaultAsync(x => x.Name == calendarName);
 
-        public async Task<List<string>> GetCalendars()
-        {
-            var calendar = await dbContext.Calendars.Select(x => x.Name).ToListAsync();
-            return  calendar;
+            dbContext.Entry(calendar)
+                .Collection(cal => cal.Events)
+                .Query()
+                .Where(x => x.Date >= DateTime.Now.AddDays(-5) || x.Date <= DateTime.Now.AddDays(+5))
+                .ToList();
+
+            return calendar;
         }
+        #endregion
+
 
         //public Task AddCalendar(string calendarName)
         //{
