@@ -20,7 +20,7 @@ namespace CalendarRestApi.Controllers.Admin
         Task<IActionResult> AddEvent(string calendarName, EventDto eventDto);
         Task<IActionResult> RemoveEvent(string calendarName, DateTime eventDate);
         Task<IActionResult> UpdateEvent(string calendarName, EventDto eventDto);
-        Task<IActionResult> GetEvents(string calendarName, DateTime eventDate);
+        Task<IActionResult> GetEvent(string calendarName, DateTime eventDate);
         #endregion
 
         #region Calendar CRUD Methods

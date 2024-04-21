@@ -1,4 +1,5 @@
 ﻿using CalendarDbContext.AppDbContext;
+using CalendarDbContext.Repositories;
 using CalendarDomain;
 using CalendarDomain.Exceptions;
 using CalendarDomain.Exceptions.Calendar;
@@ -14,44 +15,64 @@ namespace CalendarApplication.CalendarServices
 {
     public class CalendarService : ICalendarService
     {
-        private readonly ApplicationDbContext dbContext;
+        private readonly ICalendarRepository calendarRepository;
 
-        public CalendarService(ApplicationDbContext dbContext)
+        public CalendarService(ICalendarRepository calendarRepository)
         {
-            this.dbContext = dbContext;
+            this.calendarRepository = calendarRepository;
         }
+
+
+        #region Event CRUD services
+
+        public async Task AddEvent(string calendarName, DateTime date, string description, bool isHoliday)
+        {
+            var calendar = await calendarRepository.GetCalendarWithoutEvents(calendarName);
+
+            calendar.AddEvent(date, description, isHoliday);
+
+            await calendarRepository.SaveChangesAsync();
+        }
+
+        public async Task<DateEvent> GetEvent(string calendarName, DateTime eventDate)
+        {
+            var calendar = await calendarRepository.GetCalemderByNameAndEvents(calendarName,eventDate.AddDays(-15),eventDate.AddDays(15));
+            var existEvent = calendar.Events.Find(x => x.Date == eventDate);
+
+            if (null == existEvent)
+            {
+                throw new EventNotFoundException(eventDate);
+            }
+
+            return existEvent;
+        }
+
+        #endregion
 
         #region Calendar CRUD services
         public async Task AddCalendarByName(string calendarName)
         {
             var entryCalendar = CalendarDomain.Calendar.CreateByName(calendarName);
 
-            await dbContext.Calendars.AddAsync(entryCalendar);
-            await dbContext.SaveChangesAsync();
+            await calendarRepository.AddCalendarByName(entryCalendar);
 
         }
 
         public async Task<CalendarDomain.Calendar> GetCalendarByName(string calendarName)
         {
-            var calendar = await dbContext.Calendars.FirstOrDefaultAsync(x => x.Name == calendarName);
+            var calendar = await  calendarRepository.GetCalendarWithoutEvents(calendarName);
 
             if(null ==  calendar)
             {
                 throw new CalendarNotFoundException(calendarName);
             }
-
-            dbContext.Entry(calendar)
-                .Collection(cal => cal.Events)
-                .Query()
-                .Where(x => x.Date >= DateTime.Now.AddDays(-5) || x.Date <= DateTime.Now.AddDays(+5))
-                .ToList();
-
+            
             return calendar;
         }
 
         public async Task<List<DayOfWeek>> GetWeekendsByDate(string calendarName, DateTime date)
         {
-            var calendar = await dbContext.Calendars.FirstOrDefaultAsync(x => x.Name == calendarName);
+            var calendar = await calendarRepository.GetCalendarWithoutEvents(calendarName);
 
             if (null == calendar)
             {
@@ -67,28 +88,23 @@ namespace CalendarApplication.CalendarServices
         public async Task RemoveCalendarByName(string calendarName)
         {
             var entity = CalendarDomain.Calendar.CreateByName(calendarName);
-
-            dbContext.Calendars.Remove(entity);
-            await dbContext.SaveChangesAsync();
-
+            
+            await calendarRepository.RemoveCalendarByName(entity);
         }
 
-        public Task SetWeekendsToCalendar(string calendarName, List<DayOfWeek> weekends)
+        public async Task SetWeekendsToCalendar(string calendarName, List<DayOfWeek> weekends)
         {
-            var calendar = dbContext.Calendars
-                .FirstOrDefault(x => x.Name == calendarName);
+            var calendar = await calendarRepository.GetCalendarWithoutEvents(calendarName);
 
-            if(null == calendar)
+            if (null == calendar)
                 throw new CalendarNotFoundException(calendarName);
 
             calendar.SetDefaultWeekend(DateTime.Now, weekends);
 
-            dbContext.Entry(calendar).Property(x => x.Weekend).IsModified = true;            
-
-             dbContext.SaveChanges();
-            return Task.CompletedTask;
-
+            await calendarRepository.SetWeekendModified(calendar);
         }
+
+        
         #endregion
 
 

@@ -29,13 +29,26 @@ namespace CalendarRestApi.ExceptionHandling
                 var typedExceptrion = exception as CalendarNotFoundException;
                 problemDetails = new ProblemDetails()
                 {
-                    Status = (int)HttpStatusCode.BadRequest,
+                    Status = (int)HttpStatusCode.InternalServerError,
                     Title = exception.GetType().Name,
                     //Detail = $"Calander {httpContext.Request.RouteValues.ToList()}"
                     Detail = typedExceptrion.Message
                 };
 
                 isHandled = true;
+            }
+            else if (exception is EventNotFoundException)
+            {
+                var typedExceptrion = exception as EventNotFoundException;
+                problemDetails = new ProblemDetails()
+                {
+                    Status = (int)HttpStatusCode.InternalServerError,
+                    Title = exception.GetType().Name,
+                    Detail = typedExceptrion.Message
+                };
+
+                isHandled = true;
+
             }
 
             if (isHandled)

@@ -68,15 +68,19 @@ namespace CalendarRestApi.Controllers.Admin
         #region Event CRUD Apis
 
         [HttpPost("{calendarName}/Events/Add")]
-        public Task<IActionResult> AddEvent(string calendarName, EventDto eventDto)
+        public async Task<IActionResult> AddEvent(string calendarName, EventDto eventDto)
         {
-            throw new NotImplementedException();
+            await Service.AddEvent(calendarName, eventDto.Date,eventDto.Description,eventDto.IsHoliday);
+
+            return Ok($"Event Added Succussfuly to {calendarName} Calendar");
         }
 
         [HttpGet("{calendarName}/Events/{eventDate}/Get")]
-        public Task<IActionResult> GetEvents(string calendarName, DateTime eventDate)
+        public async Task<IActionResult> GetEvent(string calendarName, DateTime eventDate)
         {
-            throw new NotImplementedException();
+            var existEvent = await Service.GetEvent(calendarName, eventDate);
+
+            return Ok(existEvent);
         }
 
         [HttpDelete("{calendarName}/Events/{eventDate}/Delete")]

@@ -12,6 +12,7 @@ using System.Reflection;
 using System.Text.Json.Serialization;
 using System.Text.Json;
 using CalendarRestApi.ExceptionHandling.Comfigs;
+using CalendarDbContext.Repositories;
 
 namespace CalendarApi
 {
@@ -48,6 +49,8 @@ namespace CalendarApi
             builder.Services.AddSingleton<IMapper>(mapperConfig);
             //Add Services
             builder.Services.AddScoped<ICalendarService, CalendarService>();
+            builder.Services.AddScoped<ICalendarRepository, CalendarEfSqlRepository>();
+
 
             builder.Services
                 .AddHttpClient();

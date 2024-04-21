@@ -10,8 +10,9 @@ namespace CalendarApplication.CalendarServices
     public interface ICalendarService
     {
         Task AddCalendarByName(string calendarName);
-
+        Task AddEvent(string calendarName, DateTime date, string description, bool isHoliday);
         Task<Calendar> GetCalendarByName(string calendarName);
+        Task<DateEvent> GetEvent(string calendarName, DateTime eventDate);
         Task<List<DayOfWeek>> GetWeekendsByDate(string calendarName, DateTime date);
         Task RemoveCalendarByName(string calendarName);
         Task SetWeekendsToCalendar(string calendarName, List<DayOfWeek> weekends);
