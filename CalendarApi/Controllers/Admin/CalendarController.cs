@@ -42,9 +42,10 @@ namespace CalendarRestApi.Controllers.Admin
         }
 
         [HttpGet("{calendarName}/NextWorkingDate/{date}")]
-        public Task<IActionResult> GetNextWorkingDate(string calendarName, DateTime date)
+        public async Task<IActionResult> GetNextWorkingDate(string calendarName, DateTime date)
         {
-            throw new NotImplementedException();
+            DateTime nextWorkingDate = await Service.GetNextWorkingDate(calendarName,date);
+            return Ok(nextWorkingDate);
         }
 
         [HttpGet("{calendarName}/GetNextWorkingsDate/{date}/{step}")]
@@ -54,15 +55,17 @@ namespace CalendarRestApi.Controllers.Admin
         }
 
         [HttpGet("{calendarName}/StatusDate/{date}")]
-        public Task<IActionResult> GetStatusDate(string calendarName, DateTime date)
+        public async Task<IActionResult> GetStatusDate(string calendarName, DateTime date)
         {
-            throw new NotImplementedException();
+            DateTime dtatusDate = await Service.GetStatusDate(calendarName,date);
+            return Ok(dtatusDate);
         }
 
         [HttpGet("{calendarName}/WorkingDayCount/{startDate}/{endDate}")]
-        public Task<IActionResult> GetWorkingDayCount(string calendarName, DateTime startDate, DateTime endDate)
+        public async Task<IActionResult> GetWorkingDayCount(string calendarName, DateTime startDate, DateTime endDate)
         {
-            throw new NotImplementedException();
+            int workingDayCount = await Service.GetWorkingDayCount(calendarName, startDate, endDate);
+            return Ok(workingDayCount);
         }
 
         #endregion

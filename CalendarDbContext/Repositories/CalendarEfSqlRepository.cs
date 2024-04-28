@@ -1,5 +1,6 @@
 ﻿using CalendarDbContext.AppDbContext;
 using CalendarDomain;
+using CalendarDomain.Exceptions.Calendar;
 using Microsoft.EntityFrameworkCore;
 using System;
 
@@ -27,6 +28,11 @@ namespace CalendarDbContext.Repositories
             // , DateTime.Now.AddDays(-5), DateTime.Now.AddDays(+5)
 
             var calendar = await dbContext.Calendars.FirstOrDefaultAsync(x => x.Name == calendarName);
+
+            if (calendar == null) 
+            {
+                throw new CalendarNotFoundException(calendarName);
+            }
 
                dbContext.Entry(calendar)
                         .Collection(cal => cal.Events)

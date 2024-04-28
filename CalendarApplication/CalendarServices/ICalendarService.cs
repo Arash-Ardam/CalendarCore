@@ -14,7 +14,10 @@ namespace CalendarApplication.CalendarServices
         Task<Calendar> GetCalendarByName(string calendarName);
         Task<DateEvent> GetEvent(string calendarName, DateTime eventDate);
         Task<bool> GetIsWorkingDay(string calendarName, DateTime date);
+        Task<DateTime> GetNextWorkingDate(string calendarName, DateTime date);
+        Task<DateTime> GetStatusDate(string calendarName, DateTime date);
         Task<List<DayOfWeek>> GetWeekendsByDate(string calendarName, DateTime date);
+        Task<int> GetWorkingDayCount(string calendarName, DateTime startDate, DateTime endDate);
         Task RemoveCalendarByName(string calendarName);
         Task RemoveEvent(string calendarName, DateTime eventDate,string description);
         Task SetWeekendsToCalendar(string calendarName, List<DayOfWeek> weekends);

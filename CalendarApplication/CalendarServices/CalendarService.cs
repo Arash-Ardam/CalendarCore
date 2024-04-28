@@ -10,6 +10,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CalendarApplication.CalendarServices
 {
@@ -30,6 +31,50 @@ namespace CalendarApplication.CalendarServices
 
             return calendar.IsWorkingDay(date);
         }
+
+        public async Task<DateTime> GetStatusDate(string calendarName, DateTime date)
+        {
+            var calendar = await calendarRepository.GetCalemderByNameAndEvents(calendarName,date.AddDays(-15), date.AddDays(15));
+
+            while (calendar.IsHoliday(date))
+            {
+                date = date.AddDays(-1);
+            };
+
+            return date;
+        }
+
+        public async Task<DateTime> GetNextWorkingDate(string calendarName, DateTime date)
+        {
+            var calendar = await calendarRepository.GetCalemderByNameAndEvents(calendarName, date.AddDays(-15), date.AddDays(15));
+            date = date.AddDays(+1);
+
+            while (calendar.IsHoliday(date))
+            {
+                date = date.AddDays(+1);
+            }
+
+            return date;
+        }
+
+        public async Task<int> GetWorkingDayCount(string calendarName, DateTime startDate, DateTime endDate)
+        {
+            var calendar = await calendarRepository.GetCalemderByNameAndEvents(calendarName, startDate, endDate);
+            int workingDays = 0;
+
+            while (startDate <= endDate)
+            {
+                if (calendar.IsWorkingDay(startDate))
+                {
+                    ++workingDays;
+                }
+                    
+                startDate = startDate.AddDays(1);
+            }
+
+            return workingDays;
+        }
+
         #endregion
 
         #region Event CRUD services
@@ -123,6 +168,11 @@ namespace CalendarApplication.CalendarServices
         }
 
        
+
+
+
+
+
 
 
 
