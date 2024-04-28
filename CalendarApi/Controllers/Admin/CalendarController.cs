@@ -4,6 +4,7 @@ using CalendarRestApi.ExceptionHandling;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
@@ -16,7 +17,7 @@ namespace CalendarRestApi.Controllers.Admin
     [ApiController]
     [ApiExplorerSettings(GroupName = "V2")]
 
-    public class CalendarController : ControllerBase, ICalendarController
+    public class CalendarController : ControllerBase, ICalendarController 
     {
         private readonly ICalendarService Service;
 
@@ -34,9 +35,10 @@ namespace CalendarRestApi.Controllers.Admin
         }
 
         [HttpGet("{calendarName}/IsWorkingDay/{date}")]
-        public Task<IActionResult> GetIsWorkingDay(string calendarName, DateTime date)
+        public async Task<IActionResult> GetIsWorkingDay(string calendarName, DateTime date)
         {
-            throw new NotImplementedException();
+           var result = await Service.GetIsWorkingDay(calendarName,date);
+            return Ok(result);
         }
 
         [HttpGet("{calendarName}/NextWorkingDate/{date}")]
@@ -84,13 +86,14 @@ namespace CalendarRestApi.Controllers.Admin
         }
 
         [HttpDelete("{calendarName}/Events/{eventDate}/Delete")]
-        public Task<IActionResult> RemoveEvent(string calendarName, DateTime eventDate)
+        public async Task<IActionResult> RemoveEvent(string calendarName, DateTime eventDate,[FromQuery,BindRequired] string description)
         {
-            throw new NotImplementedException();
+            await Service.RemoveEvent(calendarName, eventDate,description);
+            return Ok("deleted");
         }
 
         [HttpPut("{calendarName}/Events/Update")]
-        public Task<IActionResult> UpdateEvent(string calendarName, EventDto eventDto)
+        public async Task<IActionResult> UpdateEvent(string calendarName, EventDto eventDto)
         {
             throw new NotImplementedException();
         }

@@ -13,8 +13,10 @@ namespace CalendarApplication.CalendarServices
         Task AddEvent(string calendarName, DateTime date, string description, bool isHoliday);
         Task<Calendar> GetCalendarByName(string calendarName);
         Task<DateEvent> GetEvent(string calendarName, DateTime eventDate);
+        Task<bool> GetIsWorkingDay(string calendarName, DateTime date);
         Task<List<DayOfWeek>> GetWeekendsByDate(string calendarName, DateTime date);
         Task RemoveCalendarByName(string calendarName);
+        Task RemoveEvent(string calendarName, DateTime eventDate,string description);
         Task SetWeekendsToCalendar(string calendarName, List<DayOfWeek> weekends);
     }
 }

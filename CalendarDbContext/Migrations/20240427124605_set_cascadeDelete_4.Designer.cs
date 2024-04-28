@@ -4,6 +4,7 @@ using CalendarDbContext.AppDbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CalendarDbContext.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240427124605_set_cascadeDelete_4")]
+    partial class set_cascadeDelete_4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,27 +47,24 @@ namespace CalendarDbContext.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("CalendarName")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<bool>("IsHoliday")
                         .HasColumnType("bit");
 
-                    b.Property<string>("calendarName")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Date", "Description");
 
-                    b.HasIndex("calendarName");
+                    b.HasIndex("CalendarName");
 
                     b.ToTable("DateEvent");
                 });
 
             modelBuilder.Entity("CalendarDomain.DateEvent", b =>
                 {
-                    b.HasOne("CalendarDomain.Calendar", "calendar")
+                    b.HasOne("CalendarDomain.Calendar", null)
                         .WithMany("Events")
-                        .HasForeignKey("calendarName")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.Navigation("calendar");
+                        .HasForeignKey("CalendarName");
                 });
 
             modelBuilder.Entity("CalendarDomain.Calendar", b =>

@@ -13,6 +13,7 @@ namespace CalendarDbContext.Repositories
         Task<Calendar> GetCalendarWithoutEvents(string calendarName);
         Task RemoveCalendarByName(Calendar entity);
         Task SetWeekendModified(Calendar calendar);
+        Task SetEventsIsModified(Calendar calendar);
 
 
         Task AddCalendarByName(Calendar newCalendar);

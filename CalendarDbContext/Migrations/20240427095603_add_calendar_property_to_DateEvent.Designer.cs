@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CalendarDbContext.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240421131255_delete_id_from_DateEvent")]
-    partial class delete_id_from_DateEvent
+    [Migration("20240427095603_add_calendar_property_to_DateEvent")]
+    partial class add_calendar_property_to_DateEvent
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

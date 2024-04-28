@@ -30,6 +30,7 @@ namespace CalendarRestApi.ExceptionHandling
                         Title = "Remove Entity Error",
                         Detail = "Entity with Argument Entered is already Removed",
                     };
+
                 }
 
                 else if (sqlException.Number == 2627)
@@ -40,6 +41,20 @@ namespace CalendarRestApi.ExceptionHandling
                         Type = exception.GetType().Name,
                         Title = "Add Entity Error",
                         Detail = "Entity with Argument Entered is already Exist",
+                    };
+                }
+
+                else
+                {
+
+                    problemDetails = new ProblemDetails()
+                    {
+                        
+                        Status = (int)HttpStatusCode.InternalServerError,
+                        Type = exception.GetType().Name,
+                        Title = "An unhandled error occurred",
+                        Detail = exception.InnerException.Message,
+
                     };
                 }
                 

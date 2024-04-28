@@ -1,6 +1,7 @@
 ﻿using CalendarDbContext.AppDbContext;
 using CalendarDomain;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 
 namespace CalendarDbContext.Repositories
@@ -26,12 +27,13 @@ namespace CalendarDbContext.Repositories
             // , DateTime.Now.AddDays(-5), DateTime.Now.AddDays(+5)
 
             var calendar = await dbContext.Calendars.FirstOrDefaultAsync(x => x.Name == calendarName);
-            
-            dbContext.Entry(calendar)
+
+               dbContext.Entry(calendar)
                         .Collection(cal => cal.Events)
                         .Query()
-                        .Where(x => x.Date >= from || x.Date <= to)
+                        .Where(x => x.Date >= from && x.Date <= to)
                         .ToList();
+
 
             return calendar;
         }
@@ -54,7 +56,11 @@ namespace CalendarDbContext.Repositories
             await SaveChangesAsync();
         }
 
-        
+        public async Task SetEventsIsModified(Calendar calendar)
+        {
+            dbContext.Calendars.Update(calendar);           
+            await SaveChangesAsync();
+        }
 
 
 
@@ -66,6 +72,6 @@ namespace CalendarDbContext.Repositories
             await dbContext.SaveChangesAsync();
         }
 
-       
+        
     }
 }

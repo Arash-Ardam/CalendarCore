@@ -40,6 +40,8 @@ namespace CalendarApi
 
             builder.Services.AddCalendarDb(builder.Configuration);
 
+            
+
             //Add Mapster Mapper
             var typeAdapterConfig = TypeAdapterConfig.GlobalSettings;
             // scans the assembly and gets the IRegister, adding the registration to the TypeAdapterConfig

@@ -23,6 +23,15 @@ namespace CalendarApplication.CalendarServices
         }
 
 
+        #region GET Apis
+        public async Task<bool> GetIsWorkingDay(string calendarName, DateTime date)
+        {
+            var calendar = await calendarRepository.GetCalemderByNameAndEvents(calendarName, date.AddDays(-15), date.AddDays(15));
+
+            return calendar.IsWorkingDay(date);
+        }
+        #endregion
+
         #region Event CRUD services
 
         public async Task AddEvent(string calendarName, DateTime date, string description, bool isHoliday)
@@ -47,6 +56,15 @@ namespace CalendarApplication.CalendarServices
             return existEvent;
         }
 
+        public async Task RemoveEvent(string calendarName, DateTime eventDate,string description)
+        {
+            var calendar = await calendarRepository.GetCalemderByNameAndEvents(calendarName,eventDate.AddDays(-15),eventDate.AddDays(15));
+
+            calendar.RemoveEvent(eventDate,description);
+            await calendarRepository.SaveChangesAsync();            
+        }
+
+   
         #endregion
 
         #region Calendar CRUD services
@@ -104,7 +122,15 @@ namespace CalendarApplication.CalendarServices
             await calendarRepository.SetWeekendModified(calendar);
         }
 
-        
+       
+
+
+
+
+
+
+
+
         #endregion
 
 

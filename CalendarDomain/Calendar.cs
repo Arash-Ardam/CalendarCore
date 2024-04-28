@@ -1,4 +1,5 @@
-﻿using DataStructures;
+﻿using CalendarDomain.Exceptions.Calendar;
+using DataStructures;
 using System.ComponentModel;
 using System.Data;
 
@@ -69,9 +70,9 @@ public class Calendar
     {
         var date = Events.FirstOrDefault(value => value.Date == dateTime && value.Description == eventDescription);
 
-        if (default != date)
+        if (null == date)
         {
-            throw new DuplicateNameException();
+            throw new EventNotFoundException();
         }
 
         Events.Remove(date);
@@ -86,6 +87,8 @@ public class Calendar
         {
             return true;
         }
+
+        var t = Events.Any(evt => evt.Date == dateTime && evt.IsHoliday);
 
         return Events.Any(evt => evt.Date == dateTime && evt.IsHoliday);
             

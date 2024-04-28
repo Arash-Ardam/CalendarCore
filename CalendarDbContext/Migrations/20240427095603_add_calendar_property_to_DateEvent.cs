@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CalendarDbContext.Migrations
 {
     /// <inheritdoc />
-    public partial class initial2 : Migration
+    public partial class add_calendar_property_to_DateEvent : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -29,7 +29,6 @@ namespace CalendarDbContext.Migrations
                 {
                     Date = table.Column<DateTime>(type: "date", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false),
                     IsHoliday = table.Column<bool>(type: "bit", nullable: false),
                     CalendarName = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },

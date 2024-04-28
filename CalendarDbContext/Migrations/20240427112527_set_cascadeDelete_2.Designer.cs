@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CalendarDbContext.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240416132512_initial2")]
-    partial class initial2
+    [Migration("20240427112527_set_cascadeDelete_2")]
+    partial class set_cascadeDelete_2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -47,27 +47,27 @@ namespace CalendarDbContext.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("CalendarName")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsHoliday")
                         .HasColumnType("bit");
 
+                    b.Property<string>("calendarName")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Date", "Description");
 
-                    b.HasIndex("CalendarName");
+                    b.HasIndex("calendarName");
 
                     b.ToTable("DateEvent");
                 });
 
             modelBuilder.Entity("CalendarDomain.DateEvent", b =>
                 {
-                    b.HasOne("CalendarDomain.Calendar", null)
+                    b.HasOne("CalendarDomain.Calendar", "calendar")
                         .WithMany("Events")
-                        .HasForeignKey("CalendarName");
+                        .HasForeignKey("calendarName")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("calendar");
                 });
 
             modelBuilder.Entity("CalendarDomain.Calendar", b =>
