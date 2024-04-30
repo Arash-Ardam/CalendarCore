@@ -10,7 +10,6 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CalendarApplication.CalendarServices
 {
@@ -25,6 +24,48 @@ namespace CalendarApplication.CalendarServices
 
 
         #region GET Apis
+
+
+        public async Task<List<DateTime>> GetNextWorkingsDate(string calendarName, DateTime date, int step)
+        {
+            // for getting (step) days after the entry date
+            date = date.AddDays(1);
+
+            var calendar = await calendarRepository.GetCalemderByNameAndEvents(calendarName,date,date.AddDays(step));
+            List<DateTime> workingDays = new List<DateTime>();
+
+
+            while (workingDays.Count < step) 
+            {
+                if (calendar.IsWorkingDay(date))
+                {
+                    workingDays.Add(date);
+                }
+                date = date.AddDays(1);
+            }
+            return workingDays;
+        }
+
+
+        public async Task<List<DateTime>> GetHolidaysWithPeriodDate(string calendarName, DateTime startDate, DateTime endDate)
+        {
+            var calendar = await calendarRepository.GetCalemderByNameAndEvents(calendarName, startDate, endDate);
+
+            List<DateTime> holidays = new List<DateTime>();
+
+            while (startDate <= endDate)
+            {
+                if (calendar.IsHoliday(startDate))
+                {
+                    holidays.Add(startDate);
+                }
+                startDate = startDate.AddDays(1);
+            }
+
+            return holidays;
+            
+        }
+
         public async Task<bool> GetIsWorkingDay(string calendarName, DateTime date)
         {
             var calendar = await calendarRepository.GetCalemderByNameAndEvents(calendarName, date.AddDays(-15), date.AddDays(15));
@@ -168,6 +209,10 @@ namespace CalendarApplication.CalendarServices
         }
 
        
+
+
+
+
 
 
 

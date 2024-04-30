@@ -37,7 +37,7 @@ namespace CalendarDbContext.Repositories
                dbContext.Entry(calendar)
                         .Collection(cal => cal.Events)
                         .Query()
-                        .Where(x => x.Date >= from && x.Date <= to)
+                        .Where(x => x.Date >= from || x.Date <= to)
                         .ToList();
 
 
@@ -78,6 +78,6 @@ namespace CalendarDbContext.Repositories
             await dbContext.SaveChangesAsync();
         }
 
-        
+       
     }
 }

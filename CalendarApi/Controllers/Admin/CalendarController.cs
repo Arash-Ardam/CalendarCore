@@ -1,4 +1,5 @@
 ﻿using CalendarApplication.CalendarServices;
+using CalendarDomain;
 using CalendarRestApi.DTOs.Event;
 using CalendarRestApi.ExceptionHandling;
 using Microsoft.AspNetCore.Authorization;
@@ -29,9 +30,10 @@ namespace CalendarRestApi.Controllers.Admin
         #region Get Apis
 
         [HttpGet("{calendarName}/HolidaysWithPeriodDate/{startDate}/{endDate}")]
-        public Task<IActionResult> GetHolidaysWithPeriodDate(string calendarName, DateTime startDate, DateTime endDate)
+        public async Task<IActionResult> GetHolidaysWithPeriodDate(string calendarName, DateTime startDate, DateTime endDate)
         {
-            throw new NotImplementedException();
+            List<DateTime> events = await Service.GetHolidaysWithPeriodDate(calendarName, startDate, endDate);
+            return Ok(events);
         }
 
         [HttpGet("{calendarName}/IsWorkingDay/{date}")]
@@ -49,9 +51,10 @@ namespace CalendarRestApi.Controllers.Admin
         }
 
         [HttpGet("{calendarName}/GetNextWorkingsDate/{date}/{step}")]
-        public Task<IActionResult> GetNextWorkingsDate(string calendarName, DateTime date, int step)
+        public async Task<IActionResult> GetNextWorkingsDate(string calendarName, DateTime date, int step)
         {
-            throw new NotImplementedException();
+            List<DateTime> workingDays = await Service.GetNextWorkingsDate(calendarName,date,step);
+            return Ok(workingDays);
         }
 
         [HttpGet("{calendarName}/StatusDate/{date}")]
