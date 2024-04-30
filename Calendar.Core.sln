@@ -19,13 +19,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastru
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CalendarDbContext", "CalendarDbContext\CalendarDbContext.csproj", "{A6A789D6-676A-486A-AAAC-9E3CBF6F75E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentation", "Presentations\Presentation\Presentation.csproj", "{166A2AE4-D333-436C-A03F-50293A718557}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Presentation", "Presentations\Presentation\Presentation.csproj", "{166A2AE4-D333-436C-A03F-50293A718557}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalendarDomain.Test", "CalendarDomain.Test\CalendarDomain.Test.csproj", "{30C9F930-6C46-4DFB-B6C8-8A6808640CDB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CalendarDomain.Test", "CalendarDomain.Test\CalendarDomain.Test.csproj", "{30C9F930-6C46-4DFB-B6C8-8A6808640CDB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataStructures", "DataStructuresHelper\DataStructures.csproj", "{C344A519-B523-4AC7-9A0C-70A6BB90E64E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataStructures", "DataStructuresHelper\DataStructures.csproj", "{C344A519-B523-4AC7-9A0C-70A6BB90E64E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataStructures.Tests", "DataStructures.Tests\DataStructures.Tests.csproj", "{3C8DB263-1C84-448A-8C2B-445967FA9510}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataStructures.Tests", "DataStructures.Tests\DataStructures.Tests.csproj", "{3C8DB263-1C84-448A-8C2B-445967FA9510}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{B6863B8D-B48E-4E75-B94C-55EAF2C1BA5F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GET_IntegrationTests", "GET_IntegrationTests\GET_IntegrationTests.csproj", "{5845DF07-8A5F-4C7B-BC3A-A87DD8306267}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -65,6 +69,10 @@ Global
 		{3C8DB263-1C84-448A-8C2B-445967FA9510}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C8DB263-1C84-448A-8C2B-445967FA9510}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3C8DB263-1C84-448A-8C2B-445967FA9510}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5845DF07-8A5F-4C7B-BC3A-A87DD8306267}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5845DF07-8A5F-4C7B-BC3A-A87DD8306267}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5845DF07-8A5F-4C7B-BC3A-A87DD8306267}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5845DF07-8A5F-4C7B-BC3A-A87DD8306267}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -78,6 +86,7 @@ Global
 		{30C9F930-6C46-4DFB-B6C8-8A6808640CDB} = {4EEEC5F9-D857-4862-B8B6-31238405168C}
 		{C344A519-B523-4AC7-9A0C-70A6BB90E64E} = {F3EB6801-EF38-41CD-B224-66B50AF75BE1}
 		{3C8DB263-1C84-448A-8C2B-445967FA9510} = {F3EB6801-EF38-41CD-B224-66B50AF75BE1}
+		{5845DF07-8A5F-4C7B-BC3A-A87DD8306267} = {B6863B8D-B48E-4E75-B94C-55EAF2C1BA5F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {981C5C51-ECD6-4B84-85AA-C3BD7A5F0822}

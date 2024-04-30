@@ -208,24 +208,6 @@ namespace CalendarApplication.CalendarServices
             await calendarRepository.SetWeekendModified(calendar);
         }
 
-       
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         #endregion
 
 

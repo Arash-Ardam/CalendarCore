@@ -53,6 +53,10 @@ namespace CalendarRestApi.Controllers.Admin
         [HttpGet("{calendarName}/GetNextWorkingsDate/{date}/{step}")]
         public async Task<IActionResult> GetNextWorkingsDate(string calendarName, DateTime date, int step)
         {
+            if (step <=0)
+            {
+                return Problem("step should  be Positive", statusCode: (int)HttpStatusCode.BadRequest);
+            }
             List<DateTime> workingDays = await Service.GetNextWorkingsDate(calendarName,date,step);
             return Ok(workingDays);
         }
