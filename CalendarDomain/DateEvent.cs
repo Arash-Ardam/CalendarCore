@@ -8,6 +8,4 @@ public class DateEvent
     public string? Description { get; internal set; }
     public bool IsHoliday { get; internal set; }
 
-    [JsonIgnore]
-    public Calendar calendar { get; }
 }

@@ -33,6 +33,11 @@ namespace CalendarDbContext.AppDbContext
                 //.HasConversion(new AffectedBYDateConvertor<List<DayOfWeek>>());
                 .HasConversion(new JsonAffectedBYDateConvertor<List<DayOfWeek>>());
 
+            modelBuilder.Entity<Calendar>()
+                .HasMany(x => x.Events)
+                .WithOne()
+                .HasForeignKey("calendarName")
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<DateEvent>()
                 .HasKey(x => new { x.Date, x.Description });
@@ -42,11 +47,10 @@ namespace CalendarDbContext.AppDbContext
                 .HasColumnType("date");
 
             modelBuilder.Entity<DateEvent>()
-                 .HasOne(x => x.calendar)
-                 .WithMany(y => y.Events)
-                 .OnDelete(DeleteBehavior.Cascade);
-
-
+                .Property<string>("calendarName")
+                .IsRequired();
+            
+            modelBuilder.Entity<DateEvent>();
         }
     }
 
