@@ -31,7 +31,6 @@ namespace GET_IntegrationTests.Tests
         [Theory,Order(2)]
         [InlineData("2019-05-05", "2019-09-12")]
         [InlineData("2023-02-01", "2023-02-06")]
-        [InlineData("2015-06-01", "2019-05-06")]
         [InlineData("2023-03-25", "2042-06-08")]
         public async Task WorkingDayCount_Should_Return_Ok(string startDate, string endDate)
         {

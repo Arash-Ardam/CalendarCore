@@ -5,21 +5,20 @@ namespace CalendarDomain.Test
         [Fact]
         public void Calendar_isHoliday_When_holidayEvent_Added()
         {
-            var calendar =  Calendar.CreateByName("TestDomain");
-            var date = new DateTime(2024, 04, 13);
-            calendar.AddEvent(date, "Test Holiday", true);
+            Calendar calendar = setTestCalendar();
 
             var isHoliday = calendar.IsHoliday(new DateTime(2024, 04, 13));
 
             Assert.True(isHoliday);
         }
 
+
+
         [Fact]
         public void Test2()
         {
-            var calendar = Calendar.CreateByName("TestDomain");
+            Calendar calendar = setTestCalendar();
             var date = new DateTime(2024, 04, 13);
-            calendar.AddEvent(date, "Test Holiday", true);
 
             var isHoliday = calendar.IsWorkingDay(new DateTime(2024, 04, 13));
 
@@ -29,9 +28,8 @@ namespace CalendarDomain.Test
         [Fact]
         public void Test3()
         {
-            var calendar = Calendar.CreateByName("TestDomain");
+            Calendar calendar = setTestCalendar();
             var date = new DateTime(2024, 04, 13);
-            calendar.AddEvent(date, "Test Holiday", true);
 
             var isHoliday = calendar.IsHoliday(new DateTime(2024, 04, 13).AddDays(1));
 
@@ -41,9 +39,9 @@ namespace CalendarDomain.Test
         [Fact]
         public void Test4()
         {
-            var calendar = Calendar.CreateByName("TestDomain");
+            Calendar calendar = setTestCalendar();
             var date = new DateTime(2024, 04, 13);
-            calendar.AddEvent(date, "Test Holiday", true);
+     
 
             var isHoliday = calendar.IsWorkingDay(new DateTime(2024, 04, 13).AddDays(1));
 
@@ -78,6 +76,22 @@ namespace CalendarDomain.Test
             Assert.True(isDone);
             Assert.All(weekends, w => enteredWeekends.Any(e => e == w));
         }
+
+
+        private static Calendar setTestCalendar()
+        {
+            Calendar calendar = Calendar.CreateByName("test");
+            var weekends = new List<DayOfWeek>() { DayOfWeek.Friday, DayOfWeek.Saturday };
+
+            calendar.SetDefaultWeekend(new DateTime(2023, 01, 01), weekends);
+            
+            var date = new DateTime(2024, 04, 13);
+
+            calendar.AddEvent(date, "Test Holiday", true);
+            return calendar;
+        }
+
+
     }
 }
 

@@ -1,3 +1,4 @@
+using DataStructures.Exceptions;
 using System.Data;
 
 namespace DataStructures.Tests.AffectedByDateCollection
@@ -42,7 +43,7 @@ namespace DataStructures.Tests.AffectedByDateCollection
             {
                 myStructure.Get(DateTime.Parse("2023-01-01")); // => NULL => OutOfRangeException
             }
-            catch (ArgumentOutOfRangeException)
+            catch (AffectedDateIsLessThanMinException)
             {
                 isException = true;
             }
