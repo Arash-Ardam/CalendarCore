@@ -1,11 +1,8 @@
 ﻿using CalendarDomain;
-using DataStructures;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.Extensions.Options;
 using System.ComponentModel;
 using System.Linq.Expressions;
-using System.Text.Json;
 
 namespace CalendarDbContext.AppDbContext
 {
@@ -30,9 +27,8 @@ namespace CalendarDbContext.AppDbContext
 
             modelBuilder.Entity<Calendar>()
                 .Property(x => x.Weekend)
-                //.HasConversion(new AffectedBYDateConvertor<List<DayOfWeek>>());
                 .HasConversion(new JsonAffectedBYDateConvertor<List<DayOfWeek>>());
-
+                
             modelBuilder.Entity<Calendar>()
                 .HasMany(x => x.Events)
                 .WithOne()
@@ -51,37 +47,6 @@ namespace CalendarDbContext.AppDbContext
                 .IsRequired();
             
             modelBuilder.Entity<DateEvent>();
-        }
-    }
-
-
-    public class AffectedBYDateConvertor<T> : ValueConverter<AffectedByDateCollection<T>, List<KeyValuePair<DateTime, T>>>
-    {
-        public AffectedBYDateConvertor() 
-            : base(abd => abd.Values, lkvp => AffectedByDateCollection<T>.CreateByList(lkvp), null)
-        {
-        }
-    }
-
-    public class JsonAffectedBYDateConvertor<T> : ValueConverter<AffectedByDateCollection<T>, string>
-    {
-        public JsonAffectedBYDateConvertor()
-            : base(v => Serialize(v), v => Deserialize(v), null)
-        {
-        }
-
-        private static AffectedByDateCollection<T> Deserialize(string str)
-        {
-            var obj = JsonSerializer.Deserialize<AffectedByDateCollection<T>>(str, new JsonSerializerOptions());
-
-            return obj;
-        }
-
-        private static string Serialize(AffectedByDateCollection<T> v)
-        {
-            var str = JsonSerializer.Serialize(v, new JsonSerializerOptions());
-
-            return str;
         }
     }
 }
