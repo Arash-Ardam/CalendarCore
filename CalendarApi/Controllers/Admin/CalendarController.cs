@@ -1,7 +1,9 @@
-﻿using CalendarApplication.CalendarServices;
+﻿using Asp.Versioning;
+using CalendarApplication.CalendarServices;
 using CalendarDomain;
 using CalendarRestApi.DTOs.Event;
 using CalendarRestApi.ExceptionHandling;
+using CalendarRestApi.SwaggerConfigs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,7 +18,8 @@ namespace CalendarRestApi.Controllers.Admin
 {
     [Route("[controller]")]
     [ApiController]
-    [ApiExplorerSettings(GroupName = "V2")]
+    //[ApiVersion(VersioningTemplates.V02_00, VersioningTemplates.CalendarGroupName)]
+   
 
     public class CalendarController : ControllerBase, ICalendarController 
     {
@@ -36,6 +39,7 @@ namespace CalendarRestApi.Controllers.Admin
             return Ok(events);
         }
 
+        [Authorize(Roles = "calendar.admin.role")]
         [HttpGet("{calendarName}/IsWorkingDay/{date}")]
         public async Task<IActionResult> GetIsWorkingDay(string calendarName, DateTime date)
         {

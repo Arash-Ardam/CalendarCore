@@ -13,6 +13,8 @@ using System.Text.Json.Serialization;
 using System.Text.Json;
 using CalendarRestApi.ExceptionHandling.Comfigs;
 using CalendarDbContext.Repositories;
+using CalendarRestApi.IdentityConfigs;
+using Microsoft.AspNetCore.Builder;
 
 namespace CalendarApi
 {
@@ -29,17 +31,17 @@ namespace CalendarApi
                         option.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
                         option.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
             }); ;
+            builder.AddIdentityConfig();
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-
-            builder.AddSwaggerGenConfigs();
-
+            builder.AddSwagger();
+            //builder.AddVersioning();
             builder.AddRequiredExceptionHandlers();
 
             builder.Services.AddProblemDetails();
 
             builder.Services.AddCalendarDb(builder.Configuration);
-
             
 
             //Add Mapster Mapper
@@ -52,7 +54,18 @@ namespace CalendarApi
             //Add Services
             builder.Services.AddScoped<ICalendarService, CalendarService>();
             builder.Services.AddScoped<ICalendarRepository, CalendarEfSqlRepository>();
+            var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                                  policy =>
+                                  {
+                                      policy.AllowAnyHeader();
+                                      policy.AllowAnyOrigin();
+                                      policy.AllowAnyMethod();
 
+                                  });
+            });
 
             builder.Services
                 .AddHttpClient();
@@ -63,17 +76,21 @@ namespace CalendarApi
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
-                app.UseSwagger();
-                app.UseSwaggerUI();
+                app.UseSwaggerGen();
             }
 
             app.UseHttpsRedirection();
 
-            app.UseAuthorization();
-
+            app.UseCors(MyAllowSpecificOrigins);
             app.UseExceptionHandler();
 
+            app.UseStaticFiles();
+            app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
+            app.MapDefaultControllerRoute();
             app.MapControllers();
+            
 
             app.Run();
         }

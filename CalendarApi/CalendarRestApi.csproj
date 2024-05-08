@@ -5,10 +5,15 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <InvariantGlobalization>false</InvariantGlobalization>
+	  <DocumentationFile>CalendarRestApi.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
+	  <PackageReference Include="Asp.Versioning.Mvc" Version="8.0.0" />
+	  <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.0.0" />
+	  <PackageReference Include="IdentityModel" Version="7.0.0" />
     <PackageReference Include="Mapster" Version="7.4.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

@@ -1,51 +1,45 @@
-﻿using CalendarDbContext.DbConfigs;
-using Microsoft.AspNetCore.Mvc.Controllers;
-using Microsoft.Extensions.Configuration;
-using Microsoft.OpenApi.Models;
-using System.Reflection;
-using System.Runtime.CompilerServices;
+﻿//using Asp.Versioning.ApiExplorer;
+//using Microsoft.Extensions.Options;
+//using Microsoft.OpenApi.Models;
+//using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace CalendarRestApi.SwaggerConfigs
-{
-    public static class SwaggerConfig
-    {
+//namespace CalendarRestApi.SwaggerConfigs;
+//public class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>
+//{
+//    private readonly IApiVersionDescriptionProvider provider;
 
-        public static void AddSwaggerGenConfigs(this WebApplicationBuilder builder)
-        {
-            var config = builder.Configuration.GetRequiredSection("Swagger");
-            var swaggerOptions = config.Get<SwaggerOptions>();
+//    /// <summary>
+//    /// Initializes a new instance of the <see cref="ConfigureSwaggerOptions"/> class.
+//    /// </summary>
+//    /// <param name="provider">The <see cref="IApiVersionDescriptionProvider">provider</see> used to generate Swagger documents.</param>
+//    public ConfigureSwaggerOptions(IApiVersionDescriptionProvider provider) => this.provider = provider;
 
-            builder.Services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo
-                {
-                    Version = "v2",
-                    Title = $"{swaggerOptions.ProductName} API",
-                    Contact = new OpenApiContact
-                    {
-                        Name = swaggerOptions.ContactName,
-                        Email = swaggerOptions.ContactEmail
-                    }
-                });
-                //var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                //var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                //c.IncludeXmlComments(xmlPath);
-                c.TagActionsBy(api =>
-                {
-                    if (api.GroupName != null)
-                    {
-                        return new[] { api.GroupName };
-                    }
-                    if (api.ActionDescriptor is ControllerActionDescriptor controllerActionDescriptor)
-                    {
-                        return new[] { controllerActionDescriptor.ControllerName };
-                    }
-                    throw new InvalidOperationException("Unable to determine tag for endpoint.");
-                });
-                c.DocInclusionPredicate((name, api) => true);
-            });
-            
-        }
+//    /// <inheritdoc />
+//    public void Configure(SwaggerGenOptions options)
+//    {
+//        // add a swagger document for each discovered API version
+//        // note: you might choose to skip or document deprecated API versions differently
+//        foreach (var description in provider.ApiVersionDescriptions)
+//        {
+//            options.SwaggerDoc(description.GroupName, CreateInfoForApiVersion(description));
+//        }
+//    }
 
-    }
-}
+//    private static OpenApiInfo CreateInfoForApiVersion(ApiVersionDescription description)
+//    {
+//        var info = new OpenApiInfo()
+//        {
+//            Version = description.ApiVersion.ToString(),
+//            Contact = new OpenApiContact()
+//            {
+//                Name = "تدبیر پرداز",
+//                Url = new Uri("https://etadbirco.ir")
+//            }
+//        };
+//        info.Title = "Calendar API V2";
+//        info.Description = "مستند سرویس تقویم";
+
+
+//        return info;
+//    }
+//}
