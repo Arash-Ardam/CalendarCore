@@ -39,7 +39,7 @@ namespace CalendarRestApi.Controllers.Admin
             return Ok(events);
         }
 
-        [Authorize(Roles = "calendar.admin.role")]
+        
         [HttpGet("{calendarName}/IsWorkingDay/{date}")]
         public async Task<IActionResult> GetIsWorkingDay(string calendarName, DateTime date)
         {
@@ -83,6 +83,7 @@ namespace CalendarRestApi.Controllers.Admin
 
         #region Event CRUD Apis
 
+        [Authorize(Roles = "calendar.admin.role")]
         [HttpPost("{calendarName}/Events/Add")]
         public async Task<IActionResult> AddEvent(string calendarName, EventDto eventDto)
         {
@@ -91,6 +92,7 @@ namespace CalendarRestApi.Controllers.Admin
             return Ok($"Event Added Succussfuly to {calendarName} Calendar");
         }
 
+        [Authorize(Roles = "calendar.admin.role")]
         [HttpGet("{calendarName}/Events/{eventDate}/Get")]
         public async Task<IActionResult> GetEvent(string calendarName, DateTime eventDate)
         {
@@ -99,6 +101,7 @@ namespace CalendarRestApi.Controllers.Admin
             return Ok(existEvent);
         }
 
+        [Authorize(Roles = "calendar.admin.role")]
         [HttpDelete("{calendarName}/Events/{eventDate}/Delete")]
         public async Task<IActionResult> RemoveEvent(string calendarName, DateTime eventDate,[FromQuery,BindRequired] string description)
         {
@@ -106,6 +109,7 @@ namespace CalendarRestApi.Controllers.Admin
             return Ok("deleted");
         }
 
+        [Authorize(Roles = "calendar.admin.role")]
         [HttpPut("{calendarName}/Events/Update")]
         public async Task<IActionResult> UpdateEvent(string calendarName, EventDto eventDto)
         {
@@ -116,6 +120,7 @@ namespace CalendarRestApi.Controllers.Admin
 
         #region Calendar CRUD Apis
 
+        [Authorize(Roles = "calendar.admin.role")]
         [HttpPost("{calendarName}/Add")]
         public async Task<IActionResult> AddCalendarByName(string calendarName)
         {
@@ -123,6 +128,7 @@ namespace CalendarRestApi.Controllers.Admin
             return Created();
         }
 
+        [Authorize(Roles = "calendar.admin.role")]
         [HttpGet("{calendarName}/Get")]
         public async Task<IActionResult> GetCalendarByName(string calendarName)
         {
@@ -130,6 +136,7 @@ namespace CalendarRestApi.Controllers.Admin
             return Ok(calendar);
         }
 
+        [Authorize(Roles = "calendar.admin.role")]
         [HttpDelete("{calendarName}/Remove")]
         public async Task<IActionResult> RemoveCalendarByName(string calendarName)
         {
@@ -137,6 +144,7 @@ namespace CalendarRestApi.Controllers.Admin
             return Accepted("Successfully Deleted");
         }
 
+        [Authorize(Roles = "calendar.admin.role")]
         [HttpGet("{calendarName}/{date}/Weekends/Get")]
         public async Task<IActionResult> GetWeekendsByDate(string calendarName, DateTime date)
         {
@@ -145,12 +153,14 @@ namespace CalendarRestApi.Controllers.Admin
             return Ok(weekends);
         }
 
+        [Authorize(Roles = "calendar.admin.role")]
         [HttpPut("{calendarName}/Weekends/Modify")]
         public Task<IActionResult> ModifyWeekendsToCalendar(string calendarName, List<DayOfWeek> weekends)
         {
             throw new NotImplementedException();
         }
 
+        [Authorize(Roles = "calendar.admin.role")]
         [HttpPost("{calendarName}/Weekends/Add")]
         public async Task<IActionResult> SetWeekendsToCalendar(string calendarName, List<DayOfWeek> weekends)
         {
@@ -160,46 +170,6 @@ namespace CalendarRestApi.Controllers.Admin
 
         #endregion
 
-
-        //[HttpPost("AddCalendarByName")]
-        //public async Task<IActionResult> AddCalendarByName(string name)
-        //{
-        //    try
-        //    {
-        //        await adminService.AddCalendarByName(name);
-
-        //        return Ok("Created Successfully !!!");
-
-        //    }
-        //    catch (DbUpdateException ex)
-        //    {
-        //        var sqlException = ex.InnerException as SqlException;
-        //        if (sqlException.Number == 2627)
-        //        {
-        //            return Problem($"Calendar with name ({name}) is already Exist", statusCode: (int)HttpStatusCode.BadRequest);
-        //        }
-        //        else
-        //        {
-        //            return Problem("Other errors");
-        //        }
-        //    }
-        //}
-
-
-        //[HttpPost("AddWeekend")]
-        //public async Task<IActionResult> AddWeekend(string CalendarName, DayOfWeek weekend)
-        //{
-        //    try
-        //    {
-        //        await adminService.AddWeekend(CalendarName, weekend);
-
-        //    }
-        //    catch (Exception)
-        //    {
-
-        //        throw;
-        //    }
-        //}
 
 
     }
