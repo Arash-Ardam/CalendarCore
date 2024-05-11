@@ -35,7 +35,7 @@ namespace CalendarRestApi.Controllers.Admin
         [HttpGet("{calendarName}/HolidaysWithPeriodDate/{startDate}/{endDate}")]
         public async Task<IActionResult> GetHolidaysWithPeriodDate(string calendarName, DateTime startDate, DateTime endDate)
         {
-            List<DateTime> events = await Service.GetHolidaysWithPeriodDate(calendarName, startDate, endDate);
+            List<GetEventDto> events = await Service.GetHolidaysWithPeriodDate(calendarName, startDate, endDate);
             return Ok(events);
         }
 

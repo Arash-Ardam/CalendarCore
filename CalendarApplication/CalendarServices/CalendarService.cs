@@ -47,22 +47,41 @@ namespace CalendarApplication.CalendarServices
         }
 
 
-        public async Task<List<DateTime>> GetHolidaysWithPeriodDate(string calendarName, DateTime startDate, DateTime endDate)
+        public async Task<List<GetEventDto>> GetHolidaysWithPeriodDate(string calendarName, DateTime startDate, DateTime endDate)
         {
             var calendar = await calendarRepository.GetCalemderByNameAndEvents(calendarName, startDate, endDate);
 
-            List<DateTime> holidays = new List<DateTime>();
-
+            List<GetEventDto> events = new List<GetEventDto>();
             while (startDate <= endDate)
             {
                 if (calendar.IsHoliday(startDate))
                 {
-                    holidays.Add(startDate);
+                    var existEvent = calendar.Events.FirstOrDefault(e => e.Date == startDate);
+
+                    var defaultEvent = new GetEventDto();
+                    if (existEvent != null)
+                    {
+                        defaultEvent.Date = existEvent.Date;
+                        defaultEvent.Description = existEvent.Description;
+                        defaultEvent.IsHoliday = existEvent.IsHoliday;
+                        defaultEvent.calendarTypeName = calendar.Name;
+
+                    }
+                    else
+                    {
+                        defaultEvent.Date = startDate;
+                        defaultEvent.Description = "آخر هفته";
+                        defaultEvent.IsHoliday = true;
+                        defaultEvent.calendarTypeName = calendar.Name;
+
+                    }
+                    events.Add(defaultEvent);
                 }
                 startDate = startDate.AddDays(1);
+
             }
 
-            return holidays;
+            return events;
             
         }
 

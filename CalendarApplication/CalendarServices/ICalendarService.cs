@@ -13,7 +13,7 @@ namespace CalendarApplication.CalendarServices
         Task AddEvent(string calendarName, DateTime date, string description, bool isHoliday);
         Task<Calendar> GetCalendarByName(string calendarName);
         Task<DateEvent> GetEvent(string calendarName, DateTime eventDate);
-        Task<List<DateTime>> GetHolidaysWithPeriodDate(string calendarName, DateTime startDate, DateTime endDate);
+        Task<List<GetEventDto>> GetHolidaysWithPeriodDate(string calendarName, DateTime startDate, DateTime endDate);
         Task<bool> GetIsWorkingDay(string calendarName, DateTime date);
         Task<DateTime> GetNextWorkingDate(string calendarName, DateTime date);
         Task<List<DateTime>> GetNextWorkingsDate(string calendarName, DateTime date, int step);
