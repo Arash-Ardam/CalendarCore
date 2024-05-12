@@ -5,9 +5,8 @@
 
         public static void AddRequiredExceptionHandlers(this WebApplicationBuilder builder) 
         {
-            builder.Services.AddExceptionHandler<CalendarExceptionHandler>();
-            builder.Services.AddExceptionHandler<AffectedbyDateCollectionExceptionHandler>();
-            builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+            builder.Services.AddExceptionHandler<CustomExceptionsHandler>();
+            builder.Services.AddExceptionHandler<GlobalExceptionsHandler>();
         }
     }
 }

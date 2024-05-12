@@ -1,20 +1,15 @@
 using CalendarApplication.CalendarServices;
 using CalendarDbContext.DbConfigs;
-using CalendarRestApi.ExceptionHandling;
 using CalendarRestApi.SwaggerConfigs;
 using Mapster;
 using MapsterMapper;
-using Microsoft.AspNetCore.Mvc.Controllers;
-using Microsoft.OpenApi.Models;
-using System.Linq.Expressions;
-using System.Net;
 using System.Reflection;
 using System.Text.Json.Serialization;
 using System.Text.Json;
 using CalendarRestApi.ExceptionHandling.Comfigs;
 using CalendarDbContext.Repositories;
 using CalendarRestApi.IdentityConfigs;
-using Microsoft.AspNetCore.Builder;
+using Serilog;
 
 namespace CalendarApi
 {
@@ -32,7 +27,7 @@ namespace CalendarApi
                         option.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
             }); ;
             builder.AddIdentityConfig();
-
+            //
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.AddSwagger();
@@ -42,7 +37,19 @@ namespace CalendarApi
             builder.Services.AddProblemDetails();
 
             builder.Services.AddCalendarDb(builder.Configuration);
-            
+
+            var logger = new LoggerConfiguration()
+                .WriteTo.Console()
+                .WriteTo.File("C:\\Users\\A.Ardam\\source\\repos\\TPG.SI.CalendarNew\\log.txt"
+                , Serilog.Events.LogEventLevel.Error
+                ).CreateLogger();
+
+            builder.Logging.ClearProviders();
+            builder.Logging.AddSerilog(logger);
+
+            //builder.Services.AddLog(builder.Configuration,builder.Environment);
+
+
 
             //Add Mapster Mapper
             var typeAdapterConfig = TypeAdapterConfig.GlobalSettings;
@@ -78,7 +85,7 @@ namespace CalendarApi
             {
                 app.UseSwaggerGen();
             }
-
+            //app.UseLog();
             app.UseHttpsRedirection();
 
             app.UseCors(MyAllowSpecificOrigins);
