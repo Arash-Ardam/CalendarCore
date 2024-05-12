@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CalendarRestApi</name>
+    </assembly>
+    <members>
+        <member name="P:CalendarRestApi.AppConfigurations.ApiName">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:CalendarRestApi.AppConfigurations.ApiVersion">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:CalendarRestApi.AppConfigurations.IdentityAddress">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:CalendarRestApi.AppConfigurations.IdentityAudience">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:CalendarRestApi.AppConfigurations.OidcSwaggerUIClientId">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:CalendarRestApi.AppConfigurations.OidcSwaggerUIClientSecret">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:CalendarRestApi.AppConfigurations.OidcApiName">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:CalendarRestApi.AppConfigurations.RequireHttpsMetadata">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:CalendarRestApi.AppConfigurations.CorsAllowAnyOrigin">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:CalendarRestApi.AppConfigurations.CorsAllowOrigins">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:CalendarRestApi.SwaggerConfigs.VersioningTemplates">
+            <summary> </summary>
+        </member>
+        <member name="F:CalendarRestApi.SwaggerConfigs.VersioningTemplates.V02_00">
+            <summary> </summary>
+        </member>
+        <member name="F:CalendarRestApi.SwaggerConfigs.VersioningTemplates.CalendarGroupName">
+            <summary> </summary>
+        </member>
+    </members>
+</doc>
