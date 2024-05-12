@@ -40,7 +40,7 @@ namespace CalendarApi
 
             var logger = new LoggerConfiguration()
                 .WriteTo.Console()
-                .WriteTo.File("C:\\Users\\A.Ardam\\source\\repos\\TPG.SI.CalendarNew\\log.txt"
+                .WriteTo.File("C:\\Users\\A.Ardam\\Desktop\\Repos\\TPG.SI.CalendarNew\\CalendarLogs.txt"
                 , Serilog.Events.LogEventLevel.Error
                 ).CreateLogger();
 
@@ -78,10 +78,10 @@ namespace CalendarApi
                 .AddHttpClient();
 
             var app = builder.Build();
-         
 
+            var isSwaggerEnabled =  app.Configuration.GetSection("swagger").GetValue<bool>("enabled", false);
             // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
+            if (app.Environment.IsDevelopment() || isSwaggerEnabled)
             {
                 app.UseSwaggerGen();
             }

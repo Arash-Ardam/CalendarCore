@@ -1,8 +1,8 @@
-2024-05-12 15:33:26.103 +03:30 [ERR] An unhandled exception has occurred while executing the request.
+2024-05-12 16:43:23.466 +03:30 [ERR] An unhandled exception has occurred while executing the request.
 CalendarDomain.Exceptions.Calendar.CalendarNotFoundException: Calander with name : ( asd ) not found.
-   at CalendarDbContext.Repositories.CalendarEfSqlRepository.GetCalemderByNameAndEvents(String calendarName, DateTime from, DateTime to) in C:\Users\A.Ardam\Source\Repos\TPG.SI.CalendarNew\CalendarDbContext\Repositories\CalendarEfSqlRepository.cs:line 34
-   at CalendarApplication.CalendarServices.CalendarService.GetIsWorkingDay(String calendarName, DateTime date) in C:\Users\A.Ardam\Source\Repos\TPG.SI.CalendarNew\CalendarApplication\CalendarServices\CalendarService.cs:line 90
-   at CalendarRestApi.Controllers.Admin.CalendarController.GetIsWorkingDay(String calendarName, DateTime date) in C:\Users\A.Ardam\Source\Repos\TPG.SI.CalendarNew\CalendarApi\Controllers\Admin\CalendarController.cs:line 46
+   at CalendarDbContext.Repositories.CalendarEfSqlRepository.GetCalemderByNameAndEvents(String calendarName, DateTime from, DateTime to) in C:\Users\A.Ardam\Desktop\Repos\TPG.SI.CalendarNew\CalendarDbContext\Repositories\CalendarEfSqlRepository.cs:line 34
+   at CalendarApplication.CalendarServices.CalendarService.GetIsWorkingDay(String calendarName, DateTime date) in C:\Users\A.Ardam\Desktop\Repos\TPG.SI.CalendarNew\CalendarApplication\CalendarServices\CalendarService.cs:line 90
+   at CalendarRestApi.Controllers.Admin.CalendarController.GetIsWorkingDay(String calendarName, DateTime date) in C:\Users\A.Ardam\Desktop\Repos\TPG.SI.CalendarNew\CalendarApi\Controllers\Admin\CalendarController.cs:line 46
    at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
    at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Logged|12_1(ControllerActionInvoker invoker)
    at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
@@ -16,11 +16,11 @@ CalendarDomain.Exceptions.Calendar.CalendarNotFoundException: Calander with name
    at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
    at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
    at Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddlewareImpl.<Invoke>g__Awaited|10_0(ExceptionHandlerMiddlewareImpl middleware, HttpContext context, Task task)
-2024-05-12 15:42:17.174 +03:30 [ERR] An unhandled exception has occurred while executing the request.
-CalendarDomain.Exceptions.Calendar.CalendarNotFoundException: Calander with name : ( asd ) not found.
-   at CalendarDbContext.Repositories.CalendarEfSqlRepository.GetCalemderByNameAndEvents(String calendarName, DateTime from, DateTime to) in C:\Users\A.Ardam\Source\Repos\TPG.SI.CalendarNew\CalendarDbContext\Repositories\CalendarEfSqlRepository.cs:line 34
-   at CalendarApplication.CalendarServices.CalendarService.GetIsWorkingDay(String calendarName, DateTime date) in C:\Users\A.Ardam\Source\Repos\TPG.SI.CalendarNew\CalendarApplication\CalendarServices\CalendarService.cs:line 90
-   at CalendarRestApi.Controllers.Admin.CalendarController.GetIsWorkingDay(String calendarName, DateTime date) in C:\Users\A.Ardam\Source\Repos\TPG.SI.CalendarNew\CalendarApi\Controllers\Admin\CalendarController.cs:line 46
+2024-05-12 16:43:54.175 +03:30 [ERR] An unhandled exception has occurred while executing the request.
+CalendarDomain.Exceptions.Calendar.CalendarNotFoundException: Calander with name : ( rthhthsdfdf ) not found.
+   at CalendarDbContext.Repositories.CalendarEfSqlRepository.GetCalemderByNameAndEvents(String calendarName, DateTime from, DateTime to) in C:\Users\A.Ardam\Desktop\Repos\TPG.SI.CalendarNew\CalendarDbContext\Repositories\CalendarEfSqlRepository.cs:line 34
+   at CalendarApplication.CalendarServices.CalendarService.GetIsWorkingDay(String calendarName, DateTime date) in C:\Users\A.Ardam\Desktop\Repos\TPG.SI.CalendarNew\CalendarApplication\CalendarServices\CalendarService.cs:line 90
+   at CalendarRestApi.Controllers.Admin.CalendarController.GetIsWorkingDay(String calendarName, DateTime date) in C:\Users\A.Ardam\Desktop\Repos\TPG.SI.CalendarNew\CalendarApi\Controllers\Admin\CalendarController.cs:line 46
    at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
    at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Logged|12_1(ControllerActionInvoker invoker)
    at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
