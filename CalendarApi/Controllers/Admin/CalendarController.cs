@@ -137,6 +137,14 @@ namespace CalendarRestApi.Controllers.Admin
         }
 
         [Authorize(Roles = "calendar.admin.role")]
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> GetAllCalendars()
+        {
+            List<Calendar> calendars = await Service.GetAllCalendars();
+            return Ok(calendars);
+        }
+
+        [Authorize(Roles = "calendar.admin.role")]
         [HttpDelete("{calendarName}/Remove")]
         public async Task<IActionResult> RemoveCalendarByName(string calendarName)
         {

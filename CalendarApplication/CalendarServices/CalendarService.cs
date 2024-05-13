@@ -227,6 +227,13 @@ namespace CalendarApplication.CalendarServices
             await calendarRepository.SetWeekendModified(calendar);
         }
 
+        public async Task<List<CalendarDomain.Calendar>> GetAllCalendars()
+        {
+            List<CalendarDomain.Calendar> calendars = await calendarRepository.GetAllCalendarsWithoutEvents();
+
+            return calendars;
+        }
+
         #endregion
 
 

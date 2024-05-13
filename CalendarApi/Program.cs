@@ -10,6 +10,7 @@ using CalendarRestApi.ExceptionHandling.Comfigs;
 using CalendarDbContext.Repositories;
 using CalendarRestApi.IdentityConfigs;
 using Serilog;
+using TPG.SI.Common.Logging;
 
 namespace CalendarApi
 {
@@ -38,16 +39,16 @@ namespace CalendarApi
 
             builder.Services.AddCalendarDb(builder.Configuration);
 
-            var logger = new LoggerConfiguration()
-                .WriteTo.Console()
-                .WriteTo.File("C:\\Users\\A.Ardam\\Desktop\\Repos\\TPG.SI.CalendarNew\\CalendarLogs.txt"
-                , Serilog.Events.LogEventLevel.Error
-                ).CreateLogger();
+            //var logger = new LoggerConfiguration()
+            //    .WriteTo.Console()
+            //    .WriteTo.File("C:\\Users\\A.Ardam\\Desktop\\Repos\\TPG.SI.CalendarNew\\CalendarLogs.txt"
+            //    , Serilog.Events.LogEventLevel.Error
+            //    ).CreateLogger();
 
             builder.Logging.ClearProviders();
-            builder.Logging.AddSerilog(logger);
+            //builder.Logging.AddSerilog(logger);
 
-            //builder.Services.AddLog(builder.Configuration,builder.Environment);
+            builder.Services.AddLog(builder.Configuration, builder.Environment);
 
 
 
@@ -85,7 +86,7 @@ namespace CalendarApi
             {
                 app.UseSwaggerGen();
             }
-            //app.UseLog();
+            app.UseLog();
             app.UseHttpsRedirection();
 
             app.UseCors(MyAllowSpecificOrigins);

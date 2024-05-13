@@ -19,5 +19,6 @@ namespace CalendarDbContext.Repositories
         Task AddCalendarByName(Calendar newCalendar);
 
         Task SaveChangesAsync();
+        Task<List<Calendar>> GetAllCalendarsWithoutEvents();
     }
 }

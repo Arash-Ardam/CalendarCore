@@ -4,7 +4,6 @@ using CalendarDomain.Exceptions.Calendar;
 using Microsoft.EntityFrameworkCore;
 using System;
 
-
 namespace CalendarDbContext.Repositories
 {
     public class CalendarEfSqlRepository : ICalendarRepository
@@ -14,6 +13,12 @@ namespace CalendarDbContext.Repositories
         public CalendarEfSqlRepository(ApplicationDbContext dbContext)
         {
                 this.dbContext = dbContext;
+        }
+
+        public async Task<List<Calendar>> GetAllCalendarsWithoutEvents()
+        {
+            var calendars = await dbContext.Calendars.ToListAsync();
+            return calendars;
         }
 
         public async Task<Calendar> GetCalendarWithoutEvents(string calendarName)
@@ -78,6 +83,6 @@ namespace CalendarDbContext.Repositories
             await dbContext.SaveChangesAsync();
         }
 
-       
+        
     }
 }

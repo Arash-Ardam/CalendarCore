@@ -11,6 +11,7 @@ namespace CalendarApplication.CalendarServices
     {
         Task AddCalendarByName(string calendarName);
         Task AddEvent(string calendarName, DateTime date, string description, bool isHoliday);
+        Task<List<Calendar>> GetAllCalendars();
         Task<Calendar> GetCalendarByName(string calendarName);
         Task<DateEvent> GetEvent(string calendarName, DateTime eventDate);
         Task<List<GetEventDto>> GetHolidaysWithPeriodDate(string calendarName, DateTime startDate, DateTime endDate);
