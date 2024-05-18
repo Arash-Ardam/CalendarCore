@@ -29,7 +29,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataStructures.Tests", "Dat
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{B6863B8D-B48E-4E75-B94C-55EAF2C1BA5F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GET_IntegrationTests", "GET_IntegrationTests\GET_IntegrationTests.csproj", "{5845DF07-8A5F-4C7B-BC3A-A87DD8306267}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GET_IntegrationTests", "GET_IntegrationTests\GET_IntegrationTests.csproj", "{5845DF07-8A5F-4C7B-BC3A-A87DD8306267}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdminPanel", "AdminPanel\AdminPanel.csproj", "{94BB87F1-BA84-4E0E-9D04-1060AE5F0067}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -73,6 +75,10 @@ Global
 		{5845DF07-8A5F-4C7B-BC3A-A87DD8306267}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5845DF07-8A5F-4C7B-BC3A-A87DD8306267}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5845DF07-8A5F-4C7B-BC3A-A87DD8306267}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94BB87F1-BA84-4E0E-9D04-1060AE5F0067}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94BB87F1-BA84-4E0E-9D04-1060AE5F0067}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94BB87F1-BA84-4E0E-9D04-1060AE5F0067}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94BB87F1-BA84-4E0E-9D04-1060AE5F0067}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -87,6 +93,7 @@ Global
 		{C344A519-B523-4AC7-9A0C-70A6BB90E64E} = {F3EB6801-EF38-41CD-B224-66B50AF75BE1}
 		{3C8DB263-1C84-448A-8C2B-445967FA9510} = {F3EB6801-EF38-41CD-B224-66B50AF75BE1}
 		{5845DF07-8A5F-4C7B-BC3A-A87DD8306267} = {B6863B8D-B48E-4E75-B94C-55EAF2C1BA5F}
+		{94BB87F1-BA84-4E0E-9D04-1060AE5F0067} = {37199DAD-18B6-4D5F-9D7C-0840B687A9F7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {981C5C51-ECD6-4B84-85AA-C3BD7A5F0822}

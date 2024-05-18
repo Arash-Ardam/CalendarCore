@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "Privacy Policy";
+}
+<h1>@ViewData["Title"]</h1>
+@model IEnumerable<Calendar>
+
+<p>Use this page to detail your site's privacy policy.</p>
+
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>CalendarName</th>
+            <th>Weekends</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in @Model)
+        {
+            <tr class="active-row">
+                <th data-bs-toggle="tooltip" data-bs-title="@item.Name (@item.Name)">@item.Name</th>
+                <th data-bs-toggle="tooltip" data-bs-title="@item.Weekend (@item.Weekend)">@item.Weekend</th>
+                <th>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -32,7 +32,7 @@ namespace CalendarRestApi.Controllers.Admin
 
         #region Get Apis
 
-        [HttpGet("{calendarName}/HolidaysWithPeriodDate/{startDate}/{endDate}")]
+        [HttpGet("{calendarName}/HolidaysWithPeriodDate/{startDate}/{endDate}",Name = "GetHolidaysWithPeriodDate")]
         public async Task<IActionResult> GetHolidaysWithPeriodDate(string calendarName, DateTime startDate, DateTime endDate)
         {
             List<GetEventDto> events = await Service.GetHolidaysWithPeriodDate(calendarName, startDate, endDate);
@@ -40,21 +40,21 @@ namespace CalendarRestApi.Controllers.Admin
         }
 
         
-        [HttpGet("{calendarName}/IsWorkingDay/{date}")]
+        [HttpGet("{calendarName}/IsWorkingDay/{date}",Name = "GetIsWorkingDay")]
         public async Task<IActionResult> GetIsWorkingDay(string calendarName, DateTime date)
         {
            var result = await Service.GetIsWorkingDay(calendarName,date);
             return Ok(result);
         }
 
-        [HttpGet("{calendarName}/NextWorkingDate/{date}")]
+        [HttpGet("{calendarName}/NextWorkingDate/{date}",Name = "GetNextWorkingDate")]
         public async Task<IActionResult> GetNextWorkingDate(string calendarName, DateTime date)
         {
             DateTime nextWorkingDate = await Service.GetNextWorkingDate(calendarName,date);
             return Ok(nextWorkingDate);
         }
 
-        [HttpGet("{calendarName}/GetNextWorkingsDate/{date}/{step}")]
+        [HttpGet("{calendarName}/GetNextWorkingsDate/{date}/{step}",Name = "GetNextWorkingsDate")]
         public async Task<IActionResult> GetNextWorkingsDate(string calendarName, DateTime date, int step)
         {
             if (step <=0)
@@ -65,14 +65,14 @@ namespace CalendarRestApi.Controllers.Admin
             return Ok(workingDays);
         }
 
-        [HttpGet("{calendarName}/StatusDate/{date}")]
+        [HttpGet("{calendarName}/StatusDate/{date}",Name = "GetStatusDate")]
         public async Task<IActionResult> GetStatusDate(string calendarName, DateTime date)
         {
             DateTime dtatusDate = await Service.GetStatusDate(calendarName,date);
             return Ok(dtatusDate);
         }
 
-        [HttpGet("{calendarName}/WorkingDayCount/{startDate}/{endDate}")]
+        [HttpGet("{calendarName}/WorkingDayCount/{startDate}/{endDate}",Name = "GetWorkingDayCount")]
         public async Task<IActionResult> GetWorkingDayCount(string calendarName, DateTime startDate, DateTime endDate)
         {
             int workingDayCount = await Service.GetWorkingDayCount(calendarName, startDate, endDate);
@@ -84,7 +84,7 @@ namespace CalendarRestApi.Controllers.Admin
         #region Event CRUD Apis
 
         [Authorize(Roles = "calendar.admin.role")]
-        [HttpPost("{calendarName}/Events/Add")]
+        [HttpPost("{calendarName}/Events/Add",Name = "AddEvent")]
         public async Task<IActionResult> AddEvent(string calendarName, EventDto eventDto)
         {
             await Service.AddEvent(calendarName, eventDto.Date,eventDto.Description,eventDto.IsHoliday);
@@ -93,16 +93,16 @@ namespace CalendarRestApi.Controllers.Admin
         }
 
         [Authorize(Roles = "calendar.admin.role")]
-        [HttpGet("{calendarName}/Events/{eventDate}/Get")]
-        public async Task<IActionResult> GetEvent(string calendarName, DateTime eventDate)
+        [HttpGet("{calendarName}/Events/{eventDate}/Get",Name = "GetEvent")]
+        public async Task<DateEvent> GetEvent(string calendarName, DateTime eventDate)
         {
             var existEvent = await Service.GetEvent(calendarName, eventDate);
 
-            return Ok(existEvent);
+            return existEvent;
         }
 
         [Authorize(Roles = "calendar.admin.role")]
-        [HttpDelete("{calendarName}/Events/{eventDate}/Delete")]
+        [HttpDelete("{calendarName}/Events/{eventDate}/Delete",Name = "RemoveEvent")]
         public async Task<IActionResult> RemoveEvent(string calendarName, DateTime eventDate,[FromQuery,BindRequired] string description)
         {
             await Service.RemoveEvent(calendarName, eventDate,description);
@@ -110,7 +110,7 @@ namespace CalendarRestApi.Controllers.Admin
         }
 
         [Authorize(Roles = "calendar.admin.role")]
-        [HttpPut("{calendarName}/Events/Update")]
+        [HttpPut("{calendarName}/Events/Update",Name = "UpdateEvent")]
         public async Task<IActionResult> UpdateEvent(string calendarName, EventDto eventDto)
         {
             throw new NotImplementedException();
@@ -121,7 +121,7 @@ namespace CalendarRestApi.Controllers.Admin
         #region Calendar CRUD Apis
 
         [Authorize(Roles = "calendar.admin.role")]
-        [HttpPost("{calendarName}/Add")]
+        [HttpPost("{calendarName}/Add",Name = "AddCalendarByName")]
         public async Task<IActionResult> AddCalendarByName(string calendarName)
         {
             await Service.AddCalendarByName(calendarName);
@@ -129,23 +129,23 @@ namespace CalendarRestApi.Controllers.Admin
         }
 
         [Authorize(Roles = "calendar.admin.role")]
-        [HttpGet("{calendarName}/Get")]
-        public async Task<IActionResult> GetCalendarByName(string calendarName)
+        [HttpGet("{calendarName}/Get",Name = "GetCalendarByName")]
+        public async Task<Calendar> GetCalendarByName(string calendarName)
         {
             var calendar = await Service.GetCalendarByName(calendarName);
-            return Ok(calendar);
+            return calendar;
         }
 
         [Authorize(Roles = "calendar.admin.role")]
-        [HttpGet("GetAll")]
-        public async Task<IActionResult> GetAllCalendars()
+        [HttpGet("GetAll", Name = "GetAllCalendars")]
+        public async Task<List<Calendar>> GetAllCalendars()
         {
             List<Calendar> calendars = await Service.GetAllCalendars();
-            return Ok(calendars);
+            return calendars;
         }
 
         [Authorize(Roles = "calendar.admin.role")]
-        [HttpDelete("{calendarName}/Remove")]
+        [HttpDelete("{calendarName}/Remove",Name = "RemoveCalendarByName")]
         public async Task<IActionResult> RemoveCalendarByName(string calendarName)
         {
             await Service.RemoveCalendarByName(calendarName);
@@ -153,23 +153,23 @@ namespace CalendarRestApi.Controllers.Admin
         }
 
         [Authorize(Roles = "calendar.admin.role")]
-        [HttpGet("{calendarName}/{date}/Weekends/Get")]
-        public async Task<IActionResult> GetWeekendsByDate(string calendarName, DateTime date)
+        [HttpGet("{calendarName}/{date}/Weekends/Get",Name = "GetWeekendsByDate")]
+        public async Task<List<DayOfWeek>> GetWeekendsByDate(string calendarName, DateTime date)
         {
             var weekends = await Service.GetWeekendsByDate(calendarName, date);
 
-            return Ok(weekends);
+            return weekends;
         }
 
         [Authorize(Roles = "calendar.admin.role")]
-        [HttpPut("{calendarName}/Weekends/Modify")]
+        [HttpPut("{calendarName}/Weekends/Modify",Name = "ModifyWeekendsToCalendar")]
         public Task<IActionResult> ModifyWeekendsToCalendar(string calendarName, List<DayOfWeek> weekends)
         {
             throw new NotImplementedException();
         }
 
         [Authorize(Roles = "calendar.admin.role")]
-        [HttpPost("{calendarName}/Weekends/Add")]
+        [HttpPost("{calendarName}/Weekends/Add", Name ="SetWeekendsToCalendar")]
         public async Task<IActionResult> SetWeekendsToCalendar(string calendarName, List<DayOfWeek> weekends)
         {
             await Service.SetWeekendsToCalendar(calendarName, weekends);
