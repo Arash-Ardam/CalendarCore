@@ -1,5 +1,7 @@
 using AdminPanel.Controllers;
 using AdminPanel.IdentityConfigs;
+using Microsoft.AspNetCore.Authentication;
+using System.Net.Http.Headers;
 
 namespace AdminPanel
 {
@@ -16,7 +18,17 @@ namespace AdminPanel
             builder.AddIdentityConfig();
             builder.Services.AddMvc()
                 .AddRazorRuntimeCompilation();
-            builder.Services.AddHttpClient<MyCalendarApi>(httpClient => httpClient.BaseAddress = new Uri("https://localhost:5000/"));
+            builder.Services.AddHttpContextAccessor();
+            builder.Services.AddHttpClient<MyCalendarApi>(async (services, httpClient) =>
+            {
+                httpClient.BaseAddress = new Uri("https://localhost:5000/");
+
+                var httpContext = services.GetRequiredService<IHttpContextAccessor>();
+
+                var accessToken = await httpContext.HttpContext.GetTokenAsync("access_token");
+
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+            });
             var app = builder.Build();
 
 

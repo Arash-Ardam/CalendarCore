@@ -12,12 +12,15 @@ namespace AdminPanel.Controllers
             api = calendarApi;
         }
 
+
+
+        [Authorize(Roles = "calendar.admin.role")]
         public async Task<IActionResult> GetAllCalendarsAsync()
         {
 
            var result = await api.GetAllCalendarsAsync();
 
-            return View("GetAllCalendars", result);
+           return View("GetAllCalendars", result);
         }
     }
 }

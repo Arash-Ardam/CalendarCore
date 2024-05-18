@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using IdentityModel;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
 namespace AdminPanel.IdentityConfigs
@@ -14,22 +17,63 @@ namespace AdminPanel.IdentityConfigs
             webApplicationBuilder
                 .Services.AddAuthentication(options =>
                 {
-                    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                    options.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
-                    options.DefaultForbidScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = "oidc";
+                    options.DefaultSignOutScheme = "oidc";
                 })
-                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+                .AddCookie("Cookies", options =>
                 {
+                    // host prefixed cookie name
+                    options.Cookie.Name = "Calendar_Api_Cookie";
+
+                })
+                .AddOpenIdConnect("oidc", options =>
+                {
+                    options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+
                     options.Authority = appConfigurations.IdentityAddress;
-                    options.RequireHttpsMetadata = appConfigurations.RequireHttpsMetadata;
-                    options.Audience = appConfigurations.IdentityAudience;
-                    options.BackchannelHttpHandler = new HttpClientHandler { ServerCertificateCustomValidationCallback = delegate { return true; } };
-                    options.TokenValidationParameters = new TokenValidationParameters()
+                    options.CallbackPath = "/auth/auth-callback";
+                    options.RequireHttpsMetadata = false;
+                    options.SignedOutRedirectUri = "/";
+
+                    // confidential client using code flow + PKCE
+                    options.ClientId = appConfigurations.OidcSwaggerUIClientId;
+                    options.ClientSecret = appConfigurations.OidcSwaggerUIClientSecret;
+                    options.ResponseType = OidcConstants.ResponseTypes.Code;
+                    
+                    options.MapInboundClaims = false;
+                    options.GetClaimsFromUserInfoEndpoint = true;
+                    options.SaveTokens = true;
+
+                    // request scopes + refresh tokens
+                    options.Scope.Clear();
+                    options.Scope.Add("openid");
+                    options.Scope.Add("profile");
+                    options.Scope.Add("calendar.api.scope");
+                    //options.Scope.Add("offline_access");
+
+                    options.ClaimActions.MapAll();
+                    options.ClaimActions.MapJsonKey("role", "role");
+                    options.ClaimActions.MapJsonKey("tenant", "tenant");
+
+                    options.GetClaimsFromUserInfoEndpoint = true;
+                    options.SaveTokens = true;
+
+
+                    options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        ValidateAudience = false,
+                        //ValidateAudience = true,
+                        //ValidTypes = new[] { "at+jwt" },
+                        NameClaimType = JwtClaimTypes.Name,
+                        RoleClaimType = JwtClaimTypes.Role,
                     };
+
+                    options.Events.OnRedirectToIdentityProvider = ctx =>
+                    {
+                        // ctx.ProtocolMessage.Prompt = "create";
+                        return Task.CompletedTask;
+                    };
+
                 });
 
             webApplicationBuilder.Services.AddAuthorization();
