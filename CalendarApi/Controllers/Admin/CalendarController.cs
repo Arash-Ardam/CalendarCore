@@ -37,7 +37,6 @@ namespace CalendarRestApi.Controllers.Admin
         [HttpGet("{calendarName}/IsWorkingDay/{date}", Name = "GetIsWorkingDay")]
         public async Task<IActionResult> GetIsWorkingDay(string calendarName, DateTime date)
         {
-            _logger.LogInformation($"Call {date} is Working Day for Calander:{calendarName}");
             var result = await Service.GetIsWorkingDay(calendarName, date);
             return Ok(result);
         }

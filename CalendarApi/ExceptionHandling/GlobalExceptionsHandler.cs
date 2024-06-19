@@ -9,6 +9,11 @@ namespace CalendarRestApi.ExceptionHandling
 {
     public class GlobalExceptionsHandler : IExceptionHandler
     {
+        private readonly ILogger<GlobalExceptionsHandler> logger;
+        public GlobalExceptionsHandler(ILogger<GlobalExceptionsHandler> logger)
+        {
+            this.logger = logger;
+        }
         public async ValueTask<bool> TryHandleAsync(
            HttpContext httpContext,
            Exception exception,
@@ -71,7 +76,7 @@ namespace CalendarRestApi.ExceptionHandling
             }
 
             await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken);
-
+            logger.LogError(problemDetails.Detail);
             return true;
 
         }

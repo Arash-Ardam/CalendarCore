@@ -80,6 +80,7 @@ namespace CalendarRestApi.ExceptionHandling
             if (isHandled)
             {
                 await httpContext.Response.WriteAsJsonAsync(problem, cancellationToken);
+                logger.LogError(problem.Detail);
 
             }
             return isHandled;
