@@ -1,6 +1,7 @@
 ﻿using CalendarApplication.CalendarServices;
 using CalendarDomain;
 using CalendarRestApi.DTOs.Event;
+using CalendarRestApi.IdentityConfigs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -77,7 +78,7 @@ namespace CalendarRestApi.Controllers.Admin
 
         #region Event CRUD Apis
 
-        [Authorize(Roles = "calendar.admin.role")]
+        [Authorize(Roles = AuthorizationConsts.CalendarAdminRole)]
         [HttpPost("{calendarName}/Events/Add", Name = "AddEvent")]
         public async Task<IActionResult> AddEvent(string calendarName, EventDto eventDto)
         {
@@ -86,7 +87,7 @@ namespace CalendarRestApi.Controllers.Admin
             return Ok($"Event Added Succussfuly to {calendarName} Calendar");
         }
 
-        [Authorize(Roles = "calendar.admin.role")]
+        [Authorize(Roles = AuthorizationConsts.CalendarAdminRole)]
         [HttpGet("{calendarName}/Events/{eventDate}/Get", Name = "GetEvent")]
         public async Task<DateEvent> GetEvent(string calendarName, DateTime eventDate)
         {
@@ -95,7 +96,7 @@ namespace CalendarRestApi.Controllers.Admin
             return existEvent;
         }
 
-        [Authorize(Roles = "calendar.admin.role")]
+        [Authorize(Roles = AuthorizationConsts.CalendarAdminRole)]
         [HttpDelete("{calendarName}/Events/{eventDate}/Delete", Name = "RemoveEvent")]
         public async Task<IActionResult> RemoveEvent(string calendarName, DateTime eventDate, [FromQuery, BindRequired] string description)
         {
@@ -103,7 +104,7 @@ namespace CalendarRestApi.Controllers.Admin
             return Ok("deleted");
         }
 
-        [Authorize(Roles = "calendar.admin.role")]
+        [Authorize(Roles = AuthorizationConsts.CalendarAdminRole)]
         [HttpPut("{calendarName}/Events/Update", Name = "UpdateEvent")]
         public async Task<IActionResult> UpdateEvent(string calendarName, EventDto eventDto)
         {
@@ -114,7 +115,7 @@ namespace CalendarRestApi.Controllers.Admin
 
         #region Calendar CRUD Apis
 
-        [Authorize(Roles = "calendar.admin.role")]
+        //[Authorize(Roles = AuthorizationConsts.CalendarAdminRole)]
         [HttpPost("{calendarName}/Add", Name = "AddCalendarByName")]
         public async Task<IActionResult> AddCalendarByName(string calendarName)
         {
@@ -122,7 +123,7 @@ namespace CalendarRestApi.Controllers.Admin
             return Created();
         }
 
-        [Authorize(Roles = "calendar.admin.role")]
+        //[Authorize(Roles = AuthorizationConsts.CalendarAdminRole)]
         [HttpGet("{calendarName}/Get", Name = "GetCalendarByName")]
         public async Task<Calendar> GetCalendarByName(string calendarName)
         {
@@ -130,7 +131,7 @@ namespace CalendarRestApi.Controllers.Admin
             return calendar;
         }
 
-        [Authorize(Roles = "calendar.admin.role")]
+        //[Authorize(Roles = AuthorizationConsts.CalendarAdminRole)]
         [HttpGet("GetAll", Name = "GetAllCalendars")]
         public async Task<List<Calendar>> GetAllCalendars()
         {
@@ -138,7 +139,7 @@ namespace CalendarRestApi.Controllers.Admin
             return calendars;
         }
 
-        [Authorize(Roles = "calendar.admin.role")]
+       // [Authorize(Roles = AuthorizationConsts.CalendarAdminRole)]
         [HttpDelete("{calendarName}/Remove", Name = "RemoveCalendarByName")]
         public async Task<IActionResult> RemoveCalendarByName(string calendarName)
         {
@@ -146,7 +147,7 @@ namespace CalendarRestApi.Controllers.Admin
             return Accepted("Successfully Deleted");
         }
 
-        [Authorize(Roles = "calendar.admin.role")]
+        //[Authorize(Roles = AuthorizationConsts.CalendarAdminRole)]
         [HttpGet("{calendarName}/{date}/Weekends/Get", Name = "GetWeekendsByDate")]
         public async Task<List<DayOfWeek>> GetWeekendsByDate(string calendarName, DateTime date)
         {
@@ -155,14 +156,14 @@ namespace CalendarRestApi.Controllers.Admin
             return weekends;
         }
 
-        [Authorize(Roles = "calendar.admin.role")]
+        //[Authorize(Roles = AuthorizationConsts.CalendarAdminRole)]
         [HttpPut("{calendarName}/Weekends/Modify", Name = "ModifyWeekendsToCalendar")]
         public Task<IActionResult> ModifyWeekendsToCalendar(string calendarName, List<DayOfWeek> weekends)
         {
             throw new NotImplementedException();
         }
 
-        [Authorize(Roles = "calendar.admin.role")]
+        //[Authorize(Roles = AuthorizationConsts.CalendarAdminRole)]
         [HttpPost("{calendarName}/Weekends/Add", Name = "SetWeekendsToCalendar")]
         public async Task<IActionResult> SetWeekendsToCalendar(string calendarName, List<DayOfWeek> weekends)
         {

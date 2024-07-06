@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using TPG.SI.SMS.Api.Configurations.Authorization;
 
 namespace CalendarRestApi.IdentityConfigs
 {
@@ -13,6 +14,12 @@ namespace CalendarRestApi.IdentityConfigs
             var appConfigurations = configurationSection.Get<AppConfigurations>();
             webApplicationBuilder.Services.AddSingleton(appConfigurations);
 
+
+            webApplicationBuilder
+             .Services.AddAccessTokenManagement().ConfigureBackchannelHttpClient(client =>
+             {
+                 client.Timeout = TimeSpan.FromSeconds(30.0);
+             });
             webApplicationBuilder
                 .Services.AddAuthentication(options =>
                 {
@@ -22,64 +29,36 @@ namespace CalendarRestApi.IdentityConfigs
                     options.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
                     options.DefaultForbidScheme = JwtBearerDefaults.AuthenticationScheme;
                 })
+                  .AddOAuth2Introspection("introspection", options =>
+                  {
+                      options.Authority = appConfigurations.IdentityAddress;
+                      options.ClientId = appConfigurations.OidcApiName;
+                      options.ClientSecret = appConfigurations.OidcSwaggerUIClientSecret;
+                      options.EnableCaching = false;
+                  })
                 .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
                 {
                     options.Authority = appConfigurations.IdentityAddress;
                     options.RequireHttpsMetadata = appConfigurations.RequireHttpsMetadata;
                     options.Audience = appConfigurations.IdentityAudience;
+                    options.MapInboundClaims = true;
+
                     options.BackchannelHttpHandler = new HttpClientHandler { ServerCertificateCustomValidationCallback = delegate { return true; } };
-                    options.TokenValidationParameters = new TokenValidationParameters()
-                    {
-                        ValidateAudience = false,
-                    };
+                    options.ForwardDefaultSelector = SchemeSelector.ForwardReferenceToken("introspection");
                 });
 
-            webApplicationBuilder.Services.AddAuthorization();
-            //webApplicationBuilder.Services.AddAuthorization(options =>
-            //{
-            //    options.AddPolicy(AuthorizationConsts.AdministrationPolicy,
-            //                    policy =>
-            //                        policy.RequireAssertion(context => context.User.HasClaim(c =>
-            //                                ((c.Type == JwtClaimTypes.Role && c.Value == AuthorizationConsts.AdminRole) ||
-            //                                 (c.Type == $"client_{JwtClaimTypes.Role}" && c.Value == AuthorizationConsts.AdminRole) ||
-            //                                 (c.Type == JwtClaimTypes.Scope && c.Value == AuthorizationConsts.AdminScope)))
-            //                        ));
+            webApplicationBuilder.Services.AddAuthorization(options =>
+            {
 
-            //    options.AddPolicy(AuthorizationConsts.CartableAdminPolicy,
-            //                    policy =>
-            //                        policy.RequireAssertion(context => context.User.HasClaim(c =>
-            //                                ((c.Type == JwtClaimTypes.Role && c.Value == AuthorizationConsts.CartableAdminRole) ||
-            //                                 (c.Type == $"client_{JwtClaimTypes.Role}" && c.Value == AuthorizationConsts.CartableAdminRole) ||
-            //                                 (c.Type == JwtClaimTypes.Scope && c.Value == AuthorizationConsts.CartableApiScope)))
-            //                        ));
+                options.AddPolicy(AuthorizationConsts.CalendarAdminRole,
+                                    policy =>
+                                        policy.RequireAssertion(context => context.User.HasClaim(c =>
+                                                ((c.Type == JwtClaimTypes.Role && c.Value == AuthorizationConsts.CalendarAdminRole) ||
+                                                 (c.Type == AuthorizationConsts.RoleClaimType && c.Value == AuthorizationConsts.CalendarAdminRole)))
+                                        ));
 
-            //    options.AddPolicy(AuthorizationConsts.CartableApproverPolicy,
-            //                    policy =>
-            //                        policy.RequireAssertion(context => context.User.HasClaim(c =>
-            //                                ((c.Type == JwtClaimTypes.Role && c.Value == AuthorizationConsts.CartableApproverRole) ||
-            //                                 (c.Type == $"client_{JwtClaimTypes.Role}" && c.Value == AuthorizationConsts.CartableApproverRole) ||
-            //                                 (c.Type == JwtClaimTypes.Scope && c.Value == AuthorizationConsts.CartableApiScope)))
-            //                        ));
+            });
 
-            //    options.AddPolicy(AuthorizationConsts.CartableUserPolicy,
-            //                    policy =>
-            //                        policy.RequireAssertion(context => context.User.HasClaim(c =>
-            //                                ((c.Type == JwtClaimTypes.Role && c.Value == AuthorizationConsts.CartableApproverRole) ||
-            //                                 (c.Type == $"client_{JwtClaimTypes.Role}" && c.Value == AuthorizationConsts.CartableAdminRole) ||
-            //                                 (c.Type == JwtClaimTypes.Role && c.Value == AuthorizationConsts.CartableAdminRole) ||
-            //                                 (c.Type == $"client_{JwtClaimTypes.Role}" && c.Value == AuthorizationConsts.CartableApproverRole) ||
-            //                                 (c.Type == JwtClaimTypes.Scope && c.Value == AuthorizationConsts.CartableApiScope)))
-            //                        ));
-
-            //    options.AddPolicy(AuthorizationConsts.WithdrawalClientPolicy,
-            //                    policy =>
-            //                        policy.RequireAssertion(context => context.User.HasClaim(c =>
-            //                                ((c.Type == JwtClaimTypes.Role && c.Value == AuthorizationConsts.WithdrawalClientRole) ||
-            //                                 (c.Type == $"client_{JwtClaimTypes.Role}" && c.Value == AuthorizationConsts.WithdrawalClientRole) ||
-            //                                 (c.Type == JwtClaimTypes.Scope && c.Value == AuthorizationConsts.WithdrawalScope)))
-            //                        ));
-
-            //});
         }
     }
 }

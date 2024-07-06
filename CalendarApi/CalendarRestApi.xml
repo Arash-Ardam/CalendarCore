@@ -63,5 +63,19 @@
         <member name="F:CalendarRestApi.SwaggerConfigs.VersioningTemplates.CalendarGroupName">
             <summary> </summary>
         </member>
+        <member name="M:TPG.SI.SMS.Api.Configurations.Authorization.SchemeSelector.ForwardReferenceToken(System.String)">
+            <summary>
+            Provides a forwarding func for JWT vs reference tokens (based on existence of dot in token)
+            </summary>
+            <param name="introspectionScheme">Scheme name of the introspection handler</param>
+            <returns></returns>
+        </member>
+        <member name="M:TPG.SI.SMS.Api.Configurations.Authorization.SchemeSelector.GetSchemeAndCredential(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            Extracts scheme and credential from Authorization header (if present)
+            </summary>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
     </members>
 </doc>

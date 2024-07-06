@@ -26,5 +26,8 @@
         public const string CartableApproverRole = "cartableapprover.role";
 
         public const string CartableApiScope = "TadbirPay.Cartable.Api.Scope";
+        public const string RoleClaimType = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role";
+
+        public const string CalendarAdminRole = "calendar.admin.role";
     }
 }

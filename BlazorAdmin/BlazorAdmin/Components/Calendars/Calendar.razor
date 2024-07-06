@@ -1,0 +1,40 @@
+﻿@using CalendarDomain
+@using Radzen
+@using Radzen.Blazor
+<h3>Calendar</h3>
+
+
+<RadzenScheduler @ref=@scheduler SlotRender=@OnSlotRender style="height: 768px;" TItem="CalendarDomain.DateEvent" Data=@_events LoadData=@LoadData StartProperty="Start" EndProperty="End"
+    TextProperty="Text" SelectedIndex="2"
+    SlotSelect=@OnSlotSelect AppointmentSelect=@OnAppointmentSelect AppointmentRender=@OnAppointmentRender
+    AppointmentMove=@OnAppointmentMove >
+    <RadzenDayView />
+    <RadzenWeekView />
+    <RadzenMonthView />
+</RadzenScheduler>
+
+<EventConsole @ref=@console />
+
+
+
+@code {
+    RadzenScheduler<CalendarDomain.DateEvent> scheduler;
+
+    private IEnumerable<CalendarDomain.DateEvent> _events;
+
+
+
+    void OnSlotRender(SchedulerSlotRenderEventArgs args)
+    {
+        // Highlight today in month view
+        if (args.View.Text == "Month" && args.Start.Date == DateTime.Today)
+        {
+            args.Attributes["style"] = "background: rgba(255,220,40,.2);";
+        }
+    }
+
+    async Task LoadData(SchedulerLoadDataEventArgs? args)
+    {
+        
+    }
+}
