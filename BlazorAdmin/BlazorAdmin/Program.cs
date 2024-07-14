@@ -10,11 +10,12 @@ namespace BlazorAdmin
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.Configure<RestEndpoints>(builder.Configuration.GetSection(nameof(RestEndpoints)));
-
+            builder.Services.AddRazorComponents();
             // Add services to the container.
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents()
                 .AddInteractiveWebAssemblyComponents();
+
 
             var app = builder.Build();
 

@@ -2,10 +2,11 @@
 @using Radzen
 @using Radzen.Blazor
 <h3>Calendar</h3>
+@inject DialogService DialogService
 
 
-<RadzenScheduler @ref=@scheduler SlotRender=@OnSlotRender style="height: 768px;" TItem="CalendarDomain.DateEvent" Data=@_events LoadData=@LoadData StartProperty="Start" EndProperty="End"
-    TextProperty="Text" SelectedIndex="2"
+<RadzenScheduler @ref=@scheduler SlotRender=@OnSlotRender style="height: 768px;" TItem="BlazorAdmin.DateEvent" Data=@_events LoadData=@LoadData StartProperty="Date" EndProperty="Date"
+    TextProperty="Description" SelectedIndex="2"
     SlotSelect=@OnSlotSelect AppointmentSelect=@OnAppointmentSelect AppointmentRender=@OnAppointmentRender
     AppointmentMove=@OnAppointmentMove >
     <RadzenDayView />
@@ -13,14 +14,13 @@
     <RadzenMonthView />
 </RadzenScheduler>
 
-<EventConsole @ref=@console />
 
 
 
 @code {
-    RadzenScheduler<CalendarDomain.DateEvent> scheduler;
+    RadzenScheduler<BlazorAdmin.DateEvent> scheduler;
 
-    private IEnumerable<CalendarDomain.DateEvent> _events;
+    private IEnumerable<BlazorAdmin.DateEvent> _events;
 
 
 
@@ -36,5 +36,20 @@
     async Task LoadData(SchedulerLoadDataEventArgs? args)
     {
         
+    }
+
+    async Task OnSlotSelect(SchedulerSlotSelectEventArgs args)
+    {
+        if (args.View.Text != "Year")
+        {
+            BlazorAdmin.DateEvent data = await DialogService.OpenAsync<AddEvent>("Add Event");
+
+            if (data != null)
+            {
+                //_events.Add(data);
+                // Either call the Reload method or reassign the Data property of the Scheduler
+                await scheduler.Reload();
+            }
+        }
     }
 }

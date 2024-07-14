@@ -1,0 +1,52 @@
+﻿@using Radzen
+@using Radzen.Blazor
+@inject DialogService DialogService
+
+<RadzenTemplateForm TItem="DateEvent" Data="@model" Submit=@OnSubmit>
+<div class="row" style="margin-bottom: 16px">
+    <div class="col-md-3">
+        <RadzenLabel Text="Select Date, bound to DateOnly" Component="DatePickerDateOnlyType" Style="margin-right: 8px; vertical-align: middle;"/>
+    </div>
+    <div class="col">
+        <RadzenDatePicker @bind-Value="@model.Date" DateFormat="MM/dd/yyyy" Name="DatePickerDateOnlyType"/>
+        <RadzenRequiredValidator Text="Title is required" Component="Date" />
+    </div>
+</div>
+<div class="row" style="margin-bottom: 16px">
+    <div class="col-md-3">
+        <RadzenLabel Text="Start" />
+    </div>
+    <div class="col">
+        <RadzenDatePicker @bind-Value="@model.Description" Name="Start" ShowTime="true" />
+        <RadzenRequiredValidator Text="Start is required" Component="Start" />
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col">
+        <RadzenButton ButtonType="ButtonType.Submit" Text="Add" />
+    </div>
+</div>
+</RadzenTemplateForm>
+@code {
+    [Parameter]
+    public DateTime Date { get; set; }
+
+    [Parameter]
+    public string Description { get; set; }
+
+    DateEvent model = new DateEvent();
+
+    protected override void OnParametersSet()
+    {
+        model.Date = Date;
+        model.Description = Description;
+        model.IsHoliday = true;
+    }
+
+    void OnSubmit(DateEvent model)
+    {
+        DialogService.Close(model);
+    }
+}

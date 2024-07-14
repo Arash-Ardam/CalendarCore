@@ -33,9 +33,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GET_IntegrationTests", "GET
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdminPanel", "AdminPanel\AdminPanel.csproj", "{94BB87F1-BA84-4E0E-9D04-1060AE5F0067}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorAdmin", "BlazorAdmin\BlazorAdmin\BlazorAdmin.csproj", "{3EA6D8F0-6838-4ABD-9CD1-FA520D95E5B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorAdmin", "BlazorAdmin\BlazorAdmin\BlazorAdmin.csproj", "{3EA6D8F0-6838-4ABD-9CD1-FA520D95E5B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorAdmin.Client", "BlazorAdmin\BlazorAdmin.Client\BlazorAdmin.Client.csproj", "{580DA827-D9AA-404A-857E-201041375DB4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorAdmin.Client", "BlazorAdmin\BlazorAdmin.Client\BlazorAdmin.Client.csproj", "{580DA827-D9AA-404A-857E-201041375DB4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
