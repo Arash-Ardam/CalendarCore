@@ -5,11 +5,11 @@
 <RadzenTemplateForm TItem="DateEvent" Data="@model" Submit=@OnSubmit>
 <div class="row" style="margin-bottom: 16px">
     <div class="col-md-3">
-        <RadzenLabel Text="Date" Component="DatePickerDateOnlyType" Style="margin-right: 8px; vertical-align: middle;"/>
+        <RadzenLabel Text="Date" Component="Date" Style="margin-right: 8px; vertical-align: middle;"/>
     </div>
     <div class="col">
-        <RadzenDatePicker @bind-Value="@model.Date" DateFormat="MM/dd/yyyy" Name="DatePickerDateOnlyType"/>
-            <RadzenRequiredValidator Text="Title is required" Component="Date" />
+        <RadzenDatePicker @bind-Value="@model.Date" DateFormat="MM/dd/yyyy" Name="Date"/>
+        <RadzenRequiredValidator Text="Title is required" Component="Date" />
     </div>
 </div>
     <div class="row" style="margin-bottom: 16px">

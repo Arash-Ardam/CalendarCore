@@ -3,6 +3,7 @@
 @using CalendarDomain
 @using Radzen
 @using Radzen.Blazor
+@inject CalendarApiService service
 @rendermode InteractiveServer
 <h3>Calendar</h3>
 @inject DialogService DialogService
@@ -23,7 +24,7 @@
 
     private IEnumerable<BlazorAdmin.DateEvent> _events;
 
-    private CalendarApiService service;
+
 
     void OnSlotRender(SchedulerSlotRenderEventArgs args)
     {
@@ -36,7 +37,7 @@
 
     async Task LoadData(SchedulerLoadDataEventArgs? args)
     {
-        //_events = await service.GetHolidaysWithPeriodDateAsync("DEFAULT_TRADING_SYSTEM", DateTime.Now.AddDays(-30), DateTime.Now.AddDays(30));
+       // _events = await service.gete("DEFAULT_TRADING_SYSTEM", DateTime.Now.AddDays(-30), DateTime.Now.AddDays(30));
     }
 
     async Task OnSlotSelect(SchedulerSlotSelectEventArgs args)
