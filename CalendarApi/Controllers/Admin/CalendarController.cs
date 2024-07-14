@@ -118,6 +118,15 @@ namespace CalendarRestApi.Controllers.Admin
             throw new NotImplementedException();
         }
 
+        //[Authorize(Roles = AuthorizationConsts.CalendarAdminRole)]
+        [HttpGet("{calendarName}/Events/Get/{startDate}/{endDate}", Name = "GetEvents")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<DateEvent>))]
+        public async Task<List<DateEvent>> GetEvents(string calendarName, DateTime startDate, DateTime endDate)
+        {
+            List<DateEvent> events = await Service.GetEvents(calendarName, startDate, endDate);
+            return events;
+        }
+
         #endregion
 
         #region Calendar CRUD Apis
@@ -180,6 +189,8 @@ namespace CalendarRestApi.Controllers.Admin
             await Service.SetWeekendsToCalendar(calendarName, weekends);
             return Created();
         }
+
+
 
         #endregion
 

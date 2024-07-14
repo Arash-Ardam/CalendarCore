@@ -22,6 +22,8 @@ namespace CalendarRestApi.Controllers.Admin
         Task<IActionResult> RemoveEvent(string calendarName, DateTime eventDate,string description);
         Task<IActionResult> UpdateEvent(string calendarName, EventDto eventDto);
         Task<DateEvent> GetEvent(string calendarName, DateTime eventDate);
+
+        Task<List<DateEvent>> GetEvents(string calendarName,DateTime startDate,DateTime endDate);
         #endregion
 
         #region Calendar CRUD Methods

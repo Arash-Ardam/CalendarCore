@@ -161,6 +161,14 @@ namespace CalendarApplication.CalendarServices
             return existEvent;
         }
 
+        public async Task<List<DateEvent>> GetEvents(string calendarName, DateTime startDate, DateTime endDate)
+        {
+            var calendar = await calendarRepository.GetLimitedCalenderByNameAndEvents(calendarName, startDate, endDate);
+            var events = calendar.Events;
+            return events;
+        }
+
+
         public async Task RemoveEvent(string calendarName, DateTime eventDate,string description)
         {
             var calendar = await calendarRepository.GetCalemderByNameAndEvents(calendarName,eventDate.AddDays(-15),eventDate.AddDays(15));
@@ -233,6 +241,8 @@ namespace CalendarApplication.CalendarServices
 
             return calendars;
         }
+
+
 
         #endregion
 

@@ -14,6 +14,7 @@ namespace CalendarApplication.CalendarServices
         Task<List<Calendar>> GetAllCalendars();
         Task<Calendar> GetCalendarByName(string calendarName);
         Task<DateEvent> GetEvent(string calendarName, DateTime eventDate);
+        Task<List<DateEvent>> GetEvents(string calendarName, DateTime startDate, DateTime endDate);
         Task<List<GetEventDto>> GetHolidaysWithPeriodDate(string calendarName, DateTime startDate, DateTime endDate);
         Task<bool> GetIsWorkingDay(string calendarName, DateTime date);
         Task<DateTime> GetNextWorkingDate(string calendarName, DateTime date);

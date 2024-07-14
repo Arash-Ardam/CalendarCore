@@ -10,6 +10,7 @@ namespace CalendarDbContext.Repositories
     public interface ICalendarRepository
     {
         Task<Calendar> GetCalemderByNameAndEvents(string calendarName, DateTime from, DateTime to);
+        Task<Calendar> GetLimitedCalenderByNameAndEvents(string calendarName, DateTime from, DateTime to);
         Task<Calendar> GetCalendarWithoutEvents(string calendarName);
         Task RemoveCalendarByName(Calendar entity);
         Task SetWeekendModified(Calendar calendar);

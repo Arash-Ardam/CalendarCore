@@ -49,6 +49,27 @@ namespace CalendarDbContext.Repositories
             return calendar;
         }
 
+        public async Task<Calendar> GetLimitedCalenderByNameAndEvents(string calendarName, DateTime from, DateTime to)
+        {
+            // , DateTime.Now.AddDays(-5), DateTime.Now.AddDays(+5)
+
+            var calendar = await dbContext.Calendars.FirstOrDefaultAsync(x => x.Name == calendarName);
+
+            if (calendar == null)
+            {
+                throw new CalendarNotFoundException(calendarName);
+            }
+
+            dbContext.Entry(calendar)
+                     .Collection(cal => cal.Events)
+                     .Query()
+                     .Where(x => x.Date >= from && x.Date <= to)
+                     .ToList();
+
+
+            return calendar;
+        }
+
         public async Task AddCalendarByName(Calendar newCalendar)
         {
             await dbContext.Calendars.AddAsync(newCalendar);
