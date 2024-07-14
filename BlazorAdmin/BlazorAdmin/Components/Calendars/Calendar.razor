@@ -1,5 +1,6 @@
 ﻿@page "/calendar"
 
+@using BlazorAdmin.Components.test
 @using CalendarDomain
 @using Radzen
 @using Radzen.Blazor
@@ -9,10 +10,10 @@
 @inject DialogService DialogService
 
 
-<RadzenScheduler @ref=@scheduler SlotRender=@OnSlotRender style="height: 768px;" TItem="BlazorAdmin.DateEvent" Data=@_events LoadData=@LoadData 
-
-     SlotSelect=@OnSlotSelect >
-     <RadzenYearView />
+<RadzenScheduler @ref=@scheduler SlotRender=@OnSlotRender style="height: 768px;" TItem="Appointment" LoadData="@OnLoadData" Data=@_events
+                 StartProperty="Start" EndProperty="End"
+                 TextProperty="Text" SlotSelect=@OnSlotSelect>
+    <RadzenYearView />
     <RadzenMonthView />
 </RadzenScheduler>
 
@@ -20,9 +21,9 @@
 
 
 @code {
-    RadzenScheduler<BlazorAdmin.DateEvent> scheduler;
+    RadzenScheduler<Appointment> scheduler;
 
-    private IEnumerable<BlazorAdmin.DateEvent> _events;
+    List<Appointment> _events = new List<Appointment>();
 
 
 
@@ -35,9 +36,22 @@
         }
     }
 
-    async Task LoadData(SchedulerLoadDataEventArgs? args)
+    async Task OnLoadData(SchedulerLoadDataEventArgs args)
     {
-       // _events = await service.gete("DEFAULT_TRADING_SYSTEM", DateTime.Now.AddDays(-30), DateTime.Now.AddDays(30));
+        // Get the appointments for between the Start and End
+        var t = await service.GetEventsAsync("DEFAULT_TRADING_SYSTEM", DateTime.Now.AddDays(-30), DateTime.Now.AddDays(30));
+        _events.Clear();
+        foreach (var item in t)
+        {
+            var entry = new Appointment()
+            {
+                Start = item.Date,
+                End = item.Date,
+                Text = item.Description
+            };
+            _events.Add(entry);
+
+        }
     }
 
     async Task OnSlotSelect(SchedulerSlotSelectEventArgs args)
@@ -45,17 +59,19 @@
 
         BlazorAdmin.DateEvent data = await DialogService.OpenAsync<AddEvent>("Add Event");
 
-            if (data != null)
-            {
-                var entry = new EventDto()
-                    {
-                        Date = data.Date,
-                        Description = data.Description,
-                        IsHoliday = data.IsHoliday
-                    };
-                await service.AddEventAsync("AtiKala", entry);
-                await scheduler.Reload();
-            }
+        if (data != null && data.Description !=null)
+        {
+            var entry = new EventDto()
+                {
+                    Date = data.Date,
+                    Description = data.Description,
+                    IsHoliday = data.IsHoliday
+                };
+            await service.AddEventAsync("AtiKala", entry);
+
+
+            await scheduler.Reload();
+        }
 
     }
 
