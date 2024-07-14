@@ -27,6 +27,7 @@ namespace CalendarRestApi.Controllers.Admin
         #region Get Apis
 
         [HttpGet("{calendarName}/HolidaysWithPeriodDate/{startDate}/{endDate}", Name = "GetHolidaysWithPeriodDate")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<GetEventDto>))]
         public async Task<IActionResult> GetHolidaysWithPeriodDate(string calendarName, DateTime startDate, DateTime endDate)
         {
 
@@ -36,6 +37,7 @@ namespace CalendarRestApi.Controllers.Admin
 
 
         [HttpGet("{calendarName}/IsWorkingDay/{date}", Name = "GetIsWorkingDay")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(bool))]
         public async Task<IActionResult> GetIsWorkingDay(string calendarName, DateTime date)
         {
             var result = await Service.GetIsWorkingDay(calendarName, date);
@@ -43,6 +45,7 @@ namespace CalendarRestApi.Controllers.Admin
         }
 
         [HttpGet("{calendarName}/NextWorkingDate/{date}", Name = "GetNextWorkingDate")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DateTime))]
         public async Task<IActionResult> GetNextWorkingDate(string calendarName, DateTime date)
         {
             DateTime nextWorkingDate = await Service.GetNextWorkingDate(calendarName, date);
@@ -50,6 +53,7 @@ namespace CalendarRestApi.Controllers.Admin
         }
 
         [HttpGet("{calendarName}/GetNextWorkingsDate/{date}/{step}", Name = "GetNextWorkingsDate")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<DateTime>))]
         public async Task<IActionResult> GetNextWorkingsDate(string calendarName, DateTime date, int step)
         {
             if (step <= 0)
@@ -61,6 +65,7 @@ namespace CalendarRestApi.Controllers.Admin
         }
 
         [HttpGet("{calendarName}/StatusDate/{date}", Name = "GetStatusDate")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DateTime))]
         public async Task<IActionResult> GetStatusDate(string calendarName, DateTime date)
         {
             DateTime dtatusDate = await Service.GetStatusDate(calendarName, date);
@@ -68,6 +73,7 @@ namespace CalendarRestApi.Controllers.Admin
         }
 
         [HttpGet("{calendarName}/WorkingDayCount/{startDate}/{endDate}", Name = "GetWorkingDayCount")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(int))]
         public async Task<IActionResult> GetWorkingDayCount(string calendarName, DateTime startDate, DateTime endDate)
         {
             int workingDayCount = await Service.GetWorkingDayCount(calendarName, startDate, endDate);
@@ -89,6 +95,7 @@ namespace CalendarRestApi.Controllers.Admin
 
         [Authorize(Roles = AuthorizationConsts.CalendarAdminRole)]
         [HttpGet("{calendarName}/Events/{eventDate}/Get", Name = "GetEvent")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DateEvent))]
         public async Task<DateEvent> GetEvent(string calendarName, DateTime eventDate)
         {
             var existEvent = await Service.GetEvent(calendarName, eventDate);
@@ -125,6 +132,7 @@ namespace CalendarRestApi.Controllers.Admin
 
         //[Authorize(Roles = AuthorizationConsts.CalendarAdminRole)]
         [HttpGet("{calendarName}/Get", Name = "GetCalendarByName")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Calendar))]
         public async Task<Calendar> GetCalendarByName(string calendarName)
         {
             var calendar = await Service.GetCalendarByName(calendarName);
@@ -133,6 +141,7 @@ namespace CalendarRestApi.Controllers.Admin
 
         //[Authorize(Roles = AuthorizationConsts.CalendarAdminRole)]
         [HttpGet("GetAll", Name = "GetAllCalendars")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Calendar>))]
         public async Task<List<Calendar>> GetAllCalendars()
         {
             List<Calendar> calendars = await Service.GetAllCalendars();
@@ -149,6 +158,7 @@ namespace CalendarRestApi.Controllers.Admin
 
         //[Authorize(Roles = AuthorizationConsts.CalendarAdminRole)]
         [HttpGet("{calendarName}/{date}/Weekends/Get", Name = "GetWeekendsByDate")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<DayOfWeek>))]
         public async Task<List<DayOfWeek>> GetWeekendsByDate(string calendarName, DateTime date)
         {
             var weekends = await Service.GetWeekendsByDate(calendarName, date);
