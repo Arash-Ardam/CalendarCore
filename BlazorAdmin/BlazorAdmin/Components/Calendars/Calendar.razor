@@ -1,16 +1,17 @@
-﻿@using CalendarDomain
+﻿@page "/calendar"
+
+@using CalendarDomain
 @using Radzen
 @using Radzen.Blazor
+@rendermode InteractiveServer
 <h3>Calendar</h3>
 @inject DialogService DialogService
 
 
-<RadzenScheduler @ref=@scheduler SlotRender=@OnSlotRender style="height: 768px;" TItem="BlazorAdmin.DateEvent" Data=@_events LoadData=@LoadData StartProperty="Date" EndProperty="Date"
-    TextProperty="Description" SelectedIndex="2"
-    SlotSelect=@OnSlotSelect AppointmentSelect=@OnAppointmentSelect AppointmentRender=@OnAppointmentRender
-    AppointmentMove=@OnAppointmentMove >
-    <RadzenDayView />
-    <RadzenWeekView />
+<RadzenScheduler @ref=@scheduler SlotRender=@OnSlotRender style="height: 768px;" TItem="BlazorAdmin.DateEvent" Data=@_events LoadData=@LoadData 
+
+     SlotSelect=@OnSlotSelect >
+     <RadzenYearView />
     <RadzenMonthView />
 </RadzenScheduler>
 
@@ -22,7 +23,7 @@
 
     private IEnumerable<BlazorAdmin.DateEvent> _events;
 
-
+    private CalendarApiService service;
 
     void OnSlotRender(SchedulerSlotRenderEventArgs args)
     {
@@ -35,21 +36,28 @@
 
     async Task LoadData(SchedulerLoadDataEventArgs? args)
     {
-        
+        //_events = await service.GetHolidaysWithPeriodDateAsync("DEFAULT_TRADING_SYSTEM", DateTime.Now.AddDays(-30), DateTime.Now.AddDays(30));
     }
 
     async Task OnSlotSelect(SchedulerSlotSelectEventArgs args)
     {
-        if (args.View.Text != "Year")
-        {
-            BlazorAdmin.DateEvent data = await DialogService.OpenAsync<AddEvent>("Add Event");
+
+        BlazorAdmin.DateEvent data = await DialogService.OpenAsync<AddEvent>("Add Event");
 
             if (data != null)
             {
-                //_events.Add(data);
-                // Either call the Reload method or reassign the Data property of the Scheduler
+                var entry = new EventDto()
+                    {
+                        Date = data.Date,
+                        Description = data.Description,
+                        IsHoliday = data.IsHoliday
+                    };
+                await service.AddEventAsync("AtiKala", entry);
                 await scheduler.Reload();
             }
-        }
+
     }
+
+
+
 }

@@ -84,7 +84,7 @@ namespace CalendarRestApi.Controllers.Admin
 
         #region Event CRUD Apis
 
-        [Authorize(Roles = AuthorizationConsts.CalendarAdminRole)]
+        //[Authorize(Roles = AuthorizationConsts.CalendarAdminRole)]
         [HttpPost("{calendarName}/Events/Add", Name = "AddEvent")]
         public async Task<IActionResult> AddEvent(string calendarName, EventDto eventDto)
         {

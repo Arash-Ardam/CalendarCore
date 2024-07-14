@@ -5,22 +5,22 @@
 <RadzenTemplateForm TItem="DateEvent" Data="@model" Submit=@OnSubmit>
 <div class="row" style="margin-bottom: 16px">
     <div class="col-md-3">
-        <RadzenLabel Text="Select Date, bound to DateOnly" Component="DatePickerDateOnlyType" Style="margin-right: 8px; vertical-align: middle;"/>
+        <RadzenLabel Text="Date" Component="DatePickerDateOnlyType" Style="margin-right: 8px; vertical-align: middle;"/>
     </div>
     <div class="col">
         <RadzenDatePicker @bind-Value="@model.Date" DateFormat="MM/dd/yyyy" Name="DatePickerDateOnlyType"/>
-        <RadzenRequiredValidator Text="Title is required" Component="Date" />
+            <RadzenRequiredValidator Text="Title is required" Component="Date" />
     </div>
 </div>
-<div class="row" style="margin-bottom: 16px">
-    <div class="col-md-3">
-        <RadzenLabel Text="Start" />
+    <div class="row" style="margin-bottom: 16px">
+        <div class="col-md-3">
+            <RadzenLabel Text="Description" />
+        </div>
+        <div class="col">
+            <RadzenTextBox @bind-Value="@model.Description" Name="Description" />
+            <RadzenRequiredValidator Text="Title is required" Component="Description" />
+        </div>
     </div>
-    <div class="col">
-        <RadzenDatePicker @bind-Value="@model.Description" Name="Start" ShowTime="true" />
-        <RadzenRequiredValidator Text="Start is required" Component="Start" />
-    </div>
-</div>
 
 <div class="row">
     <div class="col-md-3"></div>
@@ -31,7 +31,7 @@
 </RadzenTemplateForm>
 @code {
     [Parameter]
-    public DateTime Date { get; set; }
+    public DateTimeOffset Date { get; set; }
 
     [Parameter]
     public string Description { get; set; }

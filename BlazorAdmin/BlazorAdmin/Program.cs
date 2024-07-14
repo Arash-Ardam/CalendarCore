@@ -1,5 +1,6 @@
 using BlazorAdmin.Client.Pages;
 using BlazorAdmin.Components;
+using Radzen;
 
 namespace BlazorAdmin
 {
@@ -11,6 +12,12 @@ namespace BlazorAdmin
 
             builder.Services.Configure<RestEndpoints>(builder.Configuration.GetSection(nameof(RestEndpoints)));
             builder.Services.AddRazorComponents();
+            builder.Services.AddScoped<DialogService>();
+            builder.Services.AddScoped<NotificationService>();
+            builder.Services.AddScoped<ContextMenuService>();
+            builder.Services.AddScoped<CalendarApiService>();
+            builder.Services.AddScoped<TooltipService>();
+            builder.Services.AddHttpClient();
             // Add services to the container.
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents()
