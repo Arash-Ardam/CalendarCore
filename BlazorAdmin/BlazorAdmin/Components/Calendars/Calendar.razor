@@ -1,31 +1,50 @@
 ﻿@page "/calendar"
 
+@using System.Linq;
 @using BlazorAdmin.Components.test
 @using CalendarDomain
 @using Radzen
 @using Radzen.Blazor
 @inject CalendarApiService service
-@rendermode InteractiveServer
+@rendermode RenderMode.InteractiveServer
+
 <h3>Calendar</h3>
+
+<RadzenCard>
+    <RadzenLabel>Select Your Calendar</RadzenLabel>
+    <RadzenDropDown Data=@_calendars TValue="string" @bind-Value=@_selectedCalendar Change=@CalendarChanged />
+</RadzenCard>
+
+@if (!string.IsNullOrEmpty(_selectedCalendar))
+{
 @inject DialogService DialogService
 
+    <RadzenCard>
+        <RadzenScheduler @ref=@scheduler SlotRender=@OnSlotRender style="height: 768px;" TItem="Appointment" LoadData="@OnLoadData" Data=@_events
+                         StartProperty="Start" EndProperty="End"
+                         TextProperty="Text" SlotSelect=@OnSlotSelect AppointmentRender=@OnAppointmentRender>
+            <RadzenYearView />
+            <RadzenMonthView />
+        </RadzenScheduler>
+    </RadzenCard>
 
-<RadzenScheduler @ref=@scheduler SlotRender=@OnSlotRender style="height: 768px;" TItem="Appointment" LoadData="@OnLoadData" Data=@_events
-                 StartProperty="Start" EndProperty="End"
-                 TextProperty="Text" SlotSelect=@OnSlotSelect>
-    <RadzenYearView />
-    <RadzenMonthView />
-</RadzenScheduler>
-
-
+}
 
 
 @code {
     RadzenScheduler<Appointment> scheduler;
 
-    List<Appointment> _events = new List<Appointment>();
+    IEnumerable<string> _calendars;
 
+    string _selectedCalendar = string.Empty;
 
+    IEnumerable<Appointment> _events;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        _calendars = (await service.GetAllCalendarsAsync()).Select(cal => cal.Name);
+    }
 
     void OnSlotRender(SchedulerSlotRenderEventArgs args)
     {
@@ -34,24 +53,26 @@
         {
             args.Attributes["style"] = "background: rgba(255,220,40,.2);";
         }
+
+        if (args.View.Text == "Year" && (_events?.Any(evt => evt.Start == args.Start.Date && evt.IsHoliday) ?? false))
+        {
+            args.Attributes["class"] = "calendar-core-holiday-slot";
+        }
     }
 
     async Task OnLoadData(SchedulerLoadDataEventArgs args)
     {
         // Get the appointments for between the Start and End
-        var t = await service.GetEventsAsync("DEFAULT_TRADING_SYSTEM", DateTime.Now.AddDays(-30), DateTime.Now.AddDays(30));
-        _events.Clear();
-        foreach (var item in t)
-        {
-            var entry = new Appointment()
-            {
-                Start = item.Date,
-                End = item.Date,
-                Text = item.Description
-            };
-            _events.Add(entry);
 
-        }
+        _events = (await service.GetEventsAsync(_selectedCalendar, args.Start, args.End))
+            .Select(item => new Appointment()
+                {
+                    Start = item.Date,
+                    End = item.Date,
+                    Text = item.Description,
+                    IsHoliday = item.IsHoliday
+                });
+
     }
 
     async Task OnSlotSelect(SchedulerSlotSelectEventArgs args)
@@ -59,7 +80,7 @@
 
         BlazorAdmin.DateEvent data = await DialogService.OpenAsync<AddEvent>("Add Event");
 
-        if (data != null && data.Description !=null)
+        if (data != null)
         {
             var entry = new EventDto()
                 {
@@ -67,7 +88,7 @@
                     Description = data.Description,
                     IsHoliday = data.IsHoliday
                 };
-            await service.AddEventAsync("AtiKala", entry);
+            await service.AddEventAsync(_selectedCalendar, entry);
 
 
             await scheduler.Reload();
@@ -75,6 +96,20 @@
 
     }
 
+    void OnAppointmentRender(SchedulerAppointmentRenderEventArgs<Appointment> args)
+    {
+        // Never call StateHasChanged in AppointmentRender - would lead to infinite loop
 
+        if (args.Data.IsHoliday)
+        {
+            args.Attributes["style"] = "background: red";
+        }
+
+    }
+
+    void CalendarChanged()
+    {
+        scheduler.Reload();
+    }
 
 }

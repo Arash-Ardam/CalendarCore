@@ -6,5 +6,6 @@
         public DateTime End { get; set; }
 
         public string Text { get; set; }
+        public bool IsHoliday { get; set; } = false;
     }
 }
