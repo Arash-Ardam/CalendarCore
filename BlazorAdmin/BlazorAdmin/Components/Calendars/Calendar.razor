@@ -12,7 +12,7 @@
 
 <RadzenCard>
     <RadzenLabel>Select Your Calendar</RadzenLabel>
-    <RadzenDropDown Data=@_calendars TValue="string" @bind-Value=@_selectedCalendar Change=@CalendarChanged />
+    <RadzenDropDown Data=@_calendarNames TValue="string" @bind-Value=@_selectedCalendar Change=@CalendarChanged />
 </RadzenCard>
 
 @if (!string.IsNullOrEmpty(_selectedCalendar))
@@ -34,8 +34,7 @@
 @code {
     RadzenScheduler<Appointment> scheduler;
 
-    IEnumerable<string> _calendars;
-
+    IEnumerable<string> _calendarNames;
     string _selectedCalendar = string.Empty;
 
     IEnumerable<Appointment> _events;
@@ -43,11 +42,14 @@
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        _calendars = (await service.GetAllCalendarsAsync()).Select(cal => cal.Name);
+        _calendarNames = (await service.GetAllCalendarsAsync()).Select(cal => cal.Name);
+
     }
 
     void OnSlotRender(SchedulerSlotRenderEventArgs args)
     {
+
+
         // Highlight today in month view
         if (args.View.Text == "Month" && args.Start.Date == DateTime.Today)
         {
@@ -58,13 +60,14 @@
         {
             args.Attributes["class"] = "calendar-core-holiday-slot";
         }
+
     }
 
     async Task OnLoadData(SchedulerLoadDataEventArgs args)
     {
         // Get the appointments for between the Start and End
 
-        _events = (await service.GetEventsAsync(_selectedCalendar, args.Start, args.End))
+        _events = (await service.GetHolidaysWithPeriodDateAsync(_selectedCalendar, args.Start, args.End))
             .Select(item => new Appointment()
                 {
                     Start = item.Date,
@@ -72,7 +75,7 @@
                     Text = item.Description,
                     IsHoliday = item.IsHoliday
                 });
-
+            
     }
 
     async Task OnSlotSelect(SchedulerSlotSelectEventArgs args)
@@ -100,7 +103,7 @@
     {
         // Never call StateHasChanged in AppointmentRender - would lead to infinite loop
 
-        if (args.Data.IsHoliday)
+        if (args.Data.IsHoliday )
         {
             args.Attributes["style"] = "background: red";
         }
