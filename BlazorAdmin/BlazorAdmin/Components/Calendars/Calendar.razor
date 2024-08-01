@@ -91,7 +91,7 @@
                     Description = data.Description,
                     IsHoliday = data.IsHoliday
                 };
-            await service.AddEventAsync(_selectedCalendar, entry);
+            await service.AddEventAsync(_selectedCalendar,entry);
 
 
             await scheduler.Reload();
